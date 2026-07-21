@@ -1,0 +1,8 @@
+{
+  "aspect_binary": "/Users/bai/workspace/aspect-main/build/aspect",
+  "mpirun_binary": "mpirun",
+  "default_nproc": 1,
+  "working_directory": "./runs",
+  "default_timeout_seconds": 3600,
+  "extra_args": []
+}
