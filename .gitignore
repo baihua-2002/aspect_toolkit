@@ -17,3 +17,6 @@ wheels/
 
 # ASPECT run outputs
 runs/
+
+# Generated examples
+generated_examples/

@@ -16,6 +16,8 @@ RAG/
 ├── parameters.json          # 参数定义数据源
 └── cases.json               # 专家案例数据源（空模板）
 ```
+## PRM parser
+* 从语法树生成aspect prm
 
 ## MVP
 
