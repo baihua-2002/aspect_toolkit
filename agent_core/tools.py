@@ -115,26 +115,43 @@ def write_prm_file(answers: dict, filename: str, title: str | None = None) -> st
         return f"Write error: {e}. Please check that your answer keys are valid."
 
 
+def _excerpt(text: str, head: int = 2000, tail: int = 2000) -> str:
+    """Return a head+tail excerpt for very long text, preserving the
+    error-bearing start and the abort-bearing end that ASPECT/deal.II emits."""
+    if len(text) <= head + tail:
+        return text
+    return f"{text[:head]}\n... [truncated {len(text) - head - tail} chars] ...\n{text[-tail:]}"
+
+
 def run_aspect_simulation(prm_path: str, timeout: float = 600) -> str:
     """Run an ASPECT simulation with the given .prm file.
     Returns simulation result including success status, elapsed time, and any errors.
+
+    All failures (missing binary, missing file, subprocess crashes, timeouts) are
+    returned as a string so the LLM can read them and react — exceptions never
+    propagate, which would otherwise abort the whole agent run.
     """
     try:
-        _connector.validate()
+        result = _connector.run(prm_path, timeout=timeout)
     except ConnectorError as e:
-        return f"ASPECT binary not available: {e}"
+        return f"ASPECT run failed before launch: {type(e).__name__}: {e}"
+    except Exception as e:  # noqa: BLE001 - surface any subprocess error to the LLM
+        return f"ASPECT run raised an unexpected error: {type(e).__name__}: {e}"
 
-    result = _connector.run(prm_path, timeout=timeout)
     lines = [
         f"success: {result.success}",
         f"return_code: {result.returncode}",
         f"elapsed: {result.elapsed_seconds:.1f}s",
     ]
+    if result.timed_out:
+        lines.append(f"timed_out: True (limit={timeout}s)")
     if result.output_directory:
         lines.append(f"output_dir: {result.output_directory}")
     if not result.success:
-        stderr_tail = result.stderr[-1000:] if len(result.stderr) > 1000 else result.stderr
-        lines.append(f"errors:\n{stderr_tail}")
+        err = result.stderr
+        if not err.strip() and result.stdout.strip():
+            err = result.stdout  # ASPECT occasionally prints diagnostics to stdout
+        lines.append(f"errors:\n{_excerpt(err)}")
     return "\n".join(lines)
 
 
