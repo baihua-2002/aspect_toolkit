@@ -7,6 +7,7 @@ The validator checks that:
 3. Choice parameters use one of the allowed values.
 4. Dependencies are respected (e.g. ``Box`` parameters only matter when the
    geometry model is ``box``).
+5. Unrecognized parameter names are flagged with suggestions.
 
 It is intentionally lightweight: full ASPECT validation is delegated to the
 actual ASPECT executable.
@@ -25,6 +26,10 @@ from .schema import (
     Subsection,
     build_schema,
 )
+
+DEPRECATED_ALIASES: Dict[str, str] = {
+    "Use years in output instead of seconds": "Use years instead of seconds",
+}
 
 
 class ValidationError(Exception):
@@ -113,6 +118,41 @@ def _validate_level(
         elif isinstance(item, ListParameter):
             if not isinstance(value, list):
                 errors.append((full, "Expected list"))
+
+    known_names = {
+        item.name for item in schema_items
+    }
+    for key in local:
+        if key not in known_names:
+            full = f"{path_prefix}{key}"
+            if key in DEPRECATED_ALIASES:
+                errors.append((full, f"Deprecated name. Use '{DEPRECATED_ALIASES[key]}' instead."))
+            else:
+                suggestion = _suggest(key, known_names)
+                msg = f"Unrecognized parameter."
+                if suggestion:
+                    msg += f" Did you mean '{suggestion}'?"
+                errors.append((full, msg))
+
+    known_sections = {
+        item.name for item in schema_items if isinstance(item, Subsection)
+    }
+    for key in children:
+        if key not in known_sections:
+            full = f"{path_prefix}{key}"
+            suggestion = _suggest(key, known_sections)
+            msg = f"Unrecognized subsection."
+            if suggestion:
+                msg += f" Did you mean '{suggestion}'?"
+            errors.append((full, msg))
+
+
+def _suggest(name: str, candidates: set) -> str | None:
+    lower = name.lower()
+    for c in candidates:
+        if lower in c.lower() or c.lower() in lower:
+            return c
+    return None
 
 
 def _scalar_ok(value: Any, value_type: str) -> bool:

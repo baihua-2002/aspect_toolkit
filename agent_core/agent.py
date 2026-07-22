@@ -10,11 +10,13 @@ from typing import Any
 
 from pydantic_ai import Agent
 from pydantic_ai.models import Model
+from pydantic_ai.usage import UsageLimits
 
 from agent_core.tools import (
     search_parameters,
     search_cases,
     get_schema_overview,
+    list_subsection,
     validate_answers,
     assemble_prm,
     write_prm_file,
@@ -22,6 +24,7 @@ from agent_core.tools import (
     parse_aspect_errors,
     read_prm_file,
     write_raw_prm,
+    patch_prm,
 )
 
 SYSTEM_PROMPT = """\
@@ -30,14 +33,15 @@ ASPECT is a scientific software for simulating mantle convection and geodynamic 
 
 Your workflow for creating new .prm files:
 1. Understand the user's simulation requirements (geometry, physics, boundary conditions, etc.)
-2. Use `get_schema_overview` to understand available parameters
-3. Use `search_parameters` to look up specific parameter definitions and their valid values
-4. Use `search_cases` to find similar expert simulation cases for reference
-5. Generate a complete answer dictionary mapping dotted parameter paths to values
-6. Use `validate_answers` to check your answers before assembling
-7. Use `assemble_prm` or `write_prm_file` to generate the .prm file
-8. Optionally use `run_aspect_simulation` to test the simulation
-9. If errors occur, use `parse_aspect_errors` to analyze them and fix the answers
+2. Use `get_schema_overview` to understand available sections
+3. Use `list_subsection` to see ALL parameters in a specific subsection (e.g. "Material model.Simple model")
+4. Use `search_parameters` only when you need to find a parameter by keyword across sections
+5. Use `search_cases` to find similar expert simulation cases for reference
+6. Generate a complete answer dictionary mapping dotted parameter paths to values
+7. Use `validate_answers` to check your answers before assembling
+8. Use `assemble_prm` or `write_prm_file` to generate the .prm file
+9. Optionally use `run_aspect_simulation` to test the simulation
+10. If errors occur, use `parse_aspect_errors` to analyze them and fix the answers
 
 Your workflow for fixing existing .prm files:
 1. Read the file with `read_prm_file`
@@ -188,6 +192,7 @@ class AspectAgent:
                 search_parameters,
                 search_cases,
                 get_schema_overview,
+                list_subsection,
                 validate_answers,
                 assemble_prm,
                 write_prm_file,
@@ -195,13 +200,17 @@ class AspectAgent:
                 parse_aspect_errors,
                 read_prm_file,
                 write_raw_prm,
+                patch_prm,
             ],
             system_prompt=SYSTEM_PROMPT,
         )
 
     def run_sync(self, user_request: str) -> AgentResult:
         try:
-            result = self._agent.run_sync(user_request)
+            result = self._agent.run_sync(
+                user_request,
+                usage_limits=UsageLimits(request_limit=30, tool_calls_limit=50),
+            )
         except Exception as e:
             return AgentResult(success=False, output=f"Agent error: {e}")
 
@@ -237,7 +246,11 @@ class AspectAgent:
 
         def _worker() -> None:
             async def _run() -> None:
-                result = await self._agent.run(user_request, event_stream_handler=_handler)
+                result = await self._agent.run(
+                    user_request,
+                    event_stream_handler=_handler,
+                    usage_limits=UsageLimits(request_limit=30, tool_calls_limit=50),
+                )
                 holder["result"] = AgentResult(success=True, output=result.output)
             try:
                 asyncio.run(_run())

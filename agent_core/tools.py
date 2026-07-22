@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import re
 from pathlib import Path
+from queue import Queue
 
 from RAG import ParameterSearcher, CaseSearcher
 from aspect_prm_builder import assembler, schema, validator
@@ -12,17 +13,31 @@ _case_searcher = CaseSearcher()
 _schema = schema.build_schema()
 _connector = AspectConnector()
 
+_log_queue: Queue[str] | None = None
+
+
+def set_log_queue(q: Queue[str] | None) -> None:
+    global _log_queue
+    _log_queue = q
+
+
+def _push_log(line: str) -> None:
+    if _log_queue is not None:
+        _log_queue.put(line)
+
 
 def search_parameters(keyword: str, limit: int = 10) -> str:
     """Search ASPECT parameter definitions by keyword.
-    Returns a list of matching parameters with name, type, default, and brief documentation.
+    Returns matching parameters with their exact dotted key (for use in answers dict),
+    type, default, and brief documentation.
     """
     results = _param_searcher.search_summary(keyword, limit=limit)
     if not results:
         return "No parameters found."
     lines = []
     for p in results:
-        lines.append(f"- {p.section}.{p.name} | type={p.type} | default={p.default}")
+        dotted_key = p.section.replace(" / ", ".") + "." + p.name
+        lines.append(f"- {dotted_key} | type={p.type} | default={p.default}")
         if p.doc_brief:
             lines.append(f"  doc: {p.doc_brief}")
     return "\n".join(lines)
@@ -79,6 +94,41 @@ def get_schema_overview() -> str:
     return "\n".join(lines)
 
 
+def list_subsection(section_path: str) -> str:
+    """List ALL parameters under a given subsection path.
+    Use this to see every available parameter in a subsection at once.
+    Example: list_subsection("Material model.Simple model") returns all Simple model parameters.
+    The returned keys are the exact dotted paths to use in the answers dictionary.
+    """
+    flat = schema.flatten_schema(_schema)
+    prefix = section_path.rstrip(".")
+    matches = []
+    for path, param in flat:
+        full_name = ".".join(path)
+        if full_name.startswith(prefix + ".") or full_name == prefix:
+            ptype = getattr(param, "value_type", None)
+            default = getattr(param, "default", None)
+            choices = getattr(param, "choices", None)
+            required = getattr(param, "required", False)
+            doc = getattr(param, "doc", "")
+
+            type_str = ptype if ptype else type(param).__name__.replace("Parameter", "").lower()
+            if choices:
+                type_str = f"choice: {'|'.join(choices)}"
+            default_str = f" = {default}" if default is not None else ""
+            req_str = " [required]" if required else ""
+            doc_str = f" | {doc[:80]}" if doc else ""
+            matches.append(f"  {full_name} ({type_str}){default_str}{req_str}{doc_str}")
+
+    if not matches:
+        available = sorted(set(".".join(p[:2]) for p, _ in flat if len(p) > 1))
+        return (
+            f"No parameters found under '{section_path}'.\n"
+            f"Available subsections: {', '.join(available[:20])}"
+        )
+    return f"[{section_path}] ({len(matches)} parameters)\n" + "\n".join(matches)
+
+
 def validate_answers(answers: dict) -> str:
     """Validate an answer dictionary against the ASPECT schema.
     Returns a list of validation errors, or 'OK' if valid.
@@ -132,10 +182,14 @@ def run_aspect_simulation(prm_path: str, timeout: float = 600) -> str:
     propagate, which would otherwise abort the whole agent run.
     """
     try:
-        result = _connector.run(prm_path, timeout=timeout)
+        result = _connector.run_streaming(
+            prm_path, timeout=timeout, on_output=_push_log
+        )
     except ConnectorError as e:
+        _push_log(f"[error] {type(e).__name__}: {e}")
         return f"ASPECT run failed before launch: {type(e).__name__}: {e}"
     except Exception as e:  # noqa: BLE001 - surface any subprocess error to the LLM
+        _push_log(f"[error] {type(e).__name__}: {e}")
         return f"ASPECT run raised an unexpected error: {type(e).__name__}: {e}"
 
     lines = [
@@ -206,3 +260,60 @@ def write_raw_prm(path: str, content: str) -> str:
         return f"Written {len(content)} bytes to {p.resolve()}"
     except Exception as e:
         return f"Write error: {e}"
+
+
+def patch_prm(path: str, changes: dict) -> str:
+    """Incrementally edit an existing .prm file by changing specific parameter values.
+    The changes dict maps dotted parameter paths to new values.
+    Example: patch_prm("model.prm", {"Material model.Simple model.Viscosity": 1e21})
+    This is more efficient than write_raw_prm when you only need to change a few parameters.
+    """
+    try:
+        p = Path(path)
+        if not p.exists():
+            return f"File not found: {path}"
+        content = p.read_text(encoding="utf-8")
+        lines = content.splitlines()
+        patched = []
+        not_found = []
+
+        for dotted_key, new_value in changes.items():
+            parts = dotted_key.split(".")
+            param_name = parts[-1]
+            subsections = parts[:-1]
+
+            found = False
+            depth = 0
+            target_depth = len(subsections)
+            matched_sections: list[str] = []
+
+            for i, line in enumerate(lines):
+                stripped = line.strip()
+                if stripped.startswith("subsection "):
+                    sec_name = stripped[len("subsection "):]
+                    matched_sections.append(sec_name)
+                    depth += 1
+                elif stripped == "end":
+                    if matched_sections:
+                        matched_sections.pop()
+                    depth -= 1
+                elif stripped.startswith("set ") and depth == target_depth:
+                    if matched_sections == subsections or (not subsections and depth == 0):
+                        set_match = re.match(r"^(\s*set\s+)(.+?)(\s*=\s*)(.*)$", line)
+                        if set_match and set_match.group(2).strip() == param_name:
+                            lines[i] = f"{set_match.group(1)}{param_name}{set_match.group(3)}{new_value}"
+                            found = True
+                            break
+
+            if not found:
+                not_found.append(dotted_key)
+
+        p.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+        result_parts = [f"Patched {len(changes) - len(not_found)}/{len(changes)} parameter(s) in {p.resolve()}"]
+        if not_found:
+            result_parts.append(f"Not found (not changed): {', '.join(not_found)}")
+            result_parts.append("Use write_raw_prm to add missing parameters or check the parameter names.")
+        return "\n".join(result_parts)
+    except Exception as e:
+        return f"Patch error: {e}"

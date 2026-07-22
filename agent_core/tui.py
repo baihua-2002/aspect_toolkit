@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from queue import Empty
+from collections import deque
+from queue import Empty, Queue
 from typing import Any
 
 from prompt_toolkit import prompt
@@ -15,6 +16,7 @@ from rich.text import Text
 
 from agent_core.agent import AspectAgent, StreamingRun
 from agent_core.providers import ProviderRegistry
+from agent_core.tools import set_log_queue
 
 
 class _RunState:
@@ -24,6 +26,7 @@ class _RunState:
         self.thinking: dict[int, str] = {}
         self.text: dict[int, str] = {}
         self.tools: list[dict[str, Any]] = []
+        self.aspect_logs: deque[str] = deque(maxlen=200)
         self.finished: bool = False
 
     def apply(self, ev: dict[str, Any]) -> None:
@@ -100,6 +103,16 @@ class _RunState:
                 res_txt = Text(tc["result"] if tc["result"] is not None else "…")
                 table.add_row(str(i), tc["name"] + status, args_txt, res_txt)
             parts.append(table)
+
+        if self.aspect_logs:
+            log_text = Text("\n".join(self.aspect_logs))
+            parts.append(Panel(
+                log_text,
+                title=f"ASPECT Output ({len(self.aspect_logs)} lines)",
+                border_style="green",
+                title_align="left",
+                height=min(len(self.aspect_logs) + 2, 25),
+            ))
 
         if running:
             parts.append(Spinner("dots", text="[dim]Working…[/dim]"))
@@ -186,6 +199,10 @@ class AspectTUI:
 
     def _run_agent(self, user_text: str) -> None:
         agent = self._ensure_agent()
+
+        log_queue: Queue[str] = Queue()
+        set_log_queue(log_queue)
+
         run = agent.run_streaming(user_text)
         state = _RunState()
 
@@ -198,11 +215,19 @@ class AspectTUI:
                 except Empty:
                     if not run.is_running:
                         break
+                    # drain ASPECT logs even when no agent events
+                    self._drain_logs(log_queue, state)
+                    live.update(state.render(running=True))
                     continue
                 if ev is None:
                     break
                 state.apply(ev)
+                self._drain_logs(log_queue, state)
                 live.update(state.render(running=True))
+
+        # final drain
+        self._drain_logs(log_queue, state)
+        set_log_queue(None)
 
         result = run.wait()
 
@@ -221,6 +246,15 @@ class AspectTUI:
             self._console.print(f"[red]{result.output}[/red]")
         else:
             self._console.print("[dim](no textual response)[/dim]")
+
+    @staticmethod
+    def _drain_logs(log_queue: Queue[str], state: _RunState) -> None:
+        try:
+            while True:
+                line = log_queue.get_nowait()
+                state.aspect_logs.append(line)
+        except Empty:
+            pass
 
     def run(self) -> None:
         self._print_banner()

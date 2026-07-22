@@ -1135,7 +1135,7 @@ def flatten_schema(
         if isinstance(item, Subsection):
             result.extend(flatten_schema(item.parameters, path + (item.name,)))
         else:
-            result.append((path, item))
+            result.append((path + (item.name,), item))
     return result
 
 

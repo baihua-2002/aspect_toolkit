@@ -163,6 +163,78 @@ class AspectConnector:
             command=cmd,
         )
 
+    def run_streaming(
+        self,
+        prm_path: str | Path,
+        *,
+        on_output: "Callable[[str], None] | None" = None,
+        nproc: int | None = None,
+        timeout: float | None = None,
+        working_dir: str | Path | None = None,
+    ) -> RunResult:
+        """流式运行 ASPECT，逐行回调输出，返回与 run() 相同结构的 RunResult"""
+        import threading as _threading
+        from collections.abc import Callable
+
+        prm_path = Path(prm_path).expanduser().resolve()
+        if not prm_path.exists():
+            raise PrmFileNotFoundError(f"Parameter file not found: {prm_path}")
+        self.validate()
+
+        nproc = nproc or self.config.default_nproc
+        timeout = timeout or self.config.default_timeout_seconds
+        cwd = self._resolve_working_dir(prm_path, working_dir)
+        cmd = self._build_command(prm_path, nproc)
+
+        stdout_lines: list[str] = []
+        stderr_lines: list[str] = []
+        timed_out = False
+
+        proc = subprocess.Popen(
+            cmd, cwd=cwd,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            text=True,
+        )
+
+        def _reader(stream, sink: list[str], prefix: str = ""):
+            for line in stream:
+                sink.append(line)
+                if on_output:
+                    on_output(prefix + line.rstrip("\n"))
+
+        t_out = _threading.Thread(target=_reader, args=(proc.stdout, stdout_lines))
+        t_err = _threading.Thread(target=_reader, args=(proc.stderr, stderr_lines, "[stderr] "))
+        t_out.start()
+        t_err.start()
+
+        start = time.perf_counter()
+        try:
+            proc.wait(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            timed_out = True
+            proc.kill()
+            proc.wait()
+
+        t_out.join(timeout=5)
+        t_err.join(timeout=5)
+        elapsed = time.perf_counter() - start
+
+        output_dir = self._parse_output_directory(prm_path)
+        if output_dir and not output_dir.is_absolute():
+            output_dir = cwd / output_dir
+
+        return RunResult(
+            success=(proc.returncode == 0 and not timed_out),
+            returncode=proc.returncode if proc.returncode is not None else -1,
+            stdout="".join(stdout_lines),
+            stderr="".join(stderr_lines),
+            elapsed_seconds=elapsed,
+            prm_path=prm_path,
+            output_directory=output_dir,
+            timed_out=timed_out,
+            command=cmd,
+        )
+
     def run_async(
         self,
         prm_path: str | Path,
