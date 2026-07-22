@@ -9,5 +9,11 @@ wheels/
 # Virtual environments
 .venv
 
+# macOS
+.DS_Store
+
+# Qoder
+.qoder/
+
 # ASPECT run outputs
 runs/

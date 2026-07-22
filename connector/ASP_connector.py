@@ -10,15 +10,18 @@ from pathlib import Path
 
 @dataclass(frozen=True)
 class ConnectorConfig:
-    aspect_binary: Path
-    mpirun_binary: str = ""
-    default_nproc: int = 1
-    working_directory: Path = Path("./runs")
-    default_timeout_seconds: float = 3600.0
-    extra_args: list[str] = field(default_factory=list)
+    """连接器配置，包含 ASPECT 二进制路径、MPI 参数、工作目录等"""
+
+    aspect_binary: Path  # ASPECT 可执行文件路径
+    mpirun_binary: str = ""  # mpirun 可执行文件名称，为空则不使用 MPI
+    default_nproc: int = 1  # 默认并行进程数
+    working_directory: Path = Path("./runs")  # 默认工作目录
+    default_timeout_seconds: float = 3600.0  # 默认超时时间（秒）
+    extra_args: list[str] = field(default_factory=list)  # 额外命令行参数
 
     @classmethod
     def from_file(cls, path: Path) -> ConnectorConfig:
+        """从 JSON 配置文件加载配置"""
         raw = json.loads(path.read_text(encoding="utf-8"))
         return cls(
             aspect_binary=Path(raw["aspect_binary"]).expanduser().resolve(),
@@ -31,44 +34,53 @@ class ConnectorConfig:
 
     @classmethod
     def default(cls) -> ConnectorConfig:
+        """返回默认配置"""
         return cls(aspect_binary=Path("/Users/bai/workspace/aspect-main/build/aspect"))
 
 
 @dataclass(frozen=True)
 class RunResult:
-    success: bool
-    returncode: int
-    stdout: str
-    stderr: str
-    elapsed_seconds: float
-    prm_path: Path
-    output_directory: Path | None
-    timed_out: bool = False
-    command: list[str] = field(default_factory=list)
+    """运行结果，包含成功标志、返回码、标准输出/错误、耗时等"""
+
+    success: bool  # 是否成功运行
+    returncode: int  # 进程返回码
+    stdout: str  # 标准输出内容
+    stderr: str  # 标准错误内容
+    elapsed_seconds: float  # 运行耗时（秒）
+    prm_path: Path  # 参数文件路径
+    output_directory: Path | None  # 输出目录
+    timed_out: bool = False  # 是否超时
+    command: list[str] = field(default_factory=list)  # 实际执行的命令
 
 
 class ConnectorError(Exception):
+    """连接器基础异常"""
     pass
 
 
 class BinaryNotFoundError(ConnectorError):
+    """ASPECT 二进制文件未找到异常"""
     pass
 
 
 class PrmFileNotFoundError(ConnectorError):
+    """参数文件（.prm）未找到异常"""
     pass
 
 
 class RunTimeoutError(ConnectorError):
+    """运行超时异常"""
     pass
 
 
 class AspectConnector:
+    """ASPECT 求解器连接器，负责参数校验、命令构建和运行管理"""
     def __init__(
         self,
         config: ConnectorConfig | None = None,
         config_path: Path | None = None,
     ):
+        """初始化连接器，优先使用传入的 config 对象，其次从文件加载，最后使用默认配置"""
         if config is not None:
             self.config = config
         elif config_path is not None:
@@ -81,6 +93,7 @@ class AspectConnector:
                 self.config = ConnectorConfig.default()
 
     def validate(self) -> None:
+        """验证 ASPECT 二进制文件是否存在；若使用 MPI 则也验证 mpirun 是否可用"""
         binary = self.config.aspect_binary
         if not binary.exists():
             raise BinaryNotFoundError(f"ASPECT binary not found: {binary}")
@@ -100,6 +113,7 @@ class AspectConnector:
         timeout: float | None = None,
         working_dir: str | Path | None = None,
     ) -> RunResult:
+        """同步运行 ASPECT 求解，返回运行结果（支持超时处理）"""
         prm_path = Path(prm_path).expanduser().resolve()
         if not prm_path.exists():
             raise PrmFileNotFoundError(f"Parameter file not found: {prm_path}")
@@ -156,6 +170,7 @@ class AspectConnector:
         nproc: int | None = None,
         working_dir: str | Path | None = None,
     ) -> subprocess.Popen:
+        """异步启动 ASPECT 求解，返回 Popen 对象以便手动管理子进程"""
         prm_path = Path(prm_path).expanduser().resolve()
         if not prm_path.exists():
             raise PrmFileNotFoundError(f"Parameter file not found: {prm_path}")
@@ -174,6 +189,7 @@ class AspectConnector:
         )
 
     def _build_command(self, prm_path: Path, nproc: int) -> list[str]:
+        """构建 ASPECT 运行命令，nproc>1 时自动添加 mpirun 前缀"""
         cmd: list[str] = []
         if nproc > 1 and self.config.mpirun_binary:
             cmd = [self.config.mpirun_binary, "-np", str(nproc)]
@@ -185,6 +201,7 @@ class AspectConnector:
     def _resolve_working_dir(
         self, prm_path: Path, working_dir: str | Path | None
     ) -> Path:
+        """解析工作目录：优先使用传入的 working_dir，否则在配置目录下以 prm 文件名创建子目录"""
         if working_dir is not None:
             cwd = Path(working_dir).expanduser().resolve()
         else:
@@ -197,6 +214,7 @@ class AspectConnector:
 
     @staticmethod
     def _parse_output_directory(prm_path: Path) -> Path | None:
+        """从 .prm 参数文件中解析 'set Output directory' 配置项"""
         for line in prm_path.read_text(encoding="utf-8", errors="replace").splitlines():
             stripped = line.strip()
             if stripped.lower().startswith("set output directory"):
