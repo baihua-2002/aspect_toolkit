@@ -62,36 +62,43 @@ def _validate_level(
     path_prefix: str = "",
     strict: bool = False,
 ):
-    # Build a flat lookup of current-level answers.
-    level_keys: Dict[str, Any] = {}
+    # ``answers`` is a flat dict keyed by dotted paths (e.g.
+    # ``Geometry model.Box.X extent``). Split each key into the current-level
+    # name (no dot) and the nested remainder so we can recurse into subsections
+    # while validating leaf parameters directly.
+    local: Dict[str, Any] = {}
+    children: Dict[str, Dict[str, Any]] = {}
     for dotted, value in answers.items():
-        first = dotted.split(".", 1)[0]
-        level_keys[first] = value
+        if "." in dotted:
+            first, rest = dotted.split(".", 1)
+            children.setdefault(first, {})[rest] = value
+        else:
+            local[dotted] = value
 
     for item in schema_items:
         if isinstance(item, Subsection):
-            # Validate only if the section is present.
-            if item.name in level_keys and isinstance(level_keys[item.name], dict):
+            # A subsection is present if any answer key lives under it.
+            sub_answers = children.get(item.name)
+            if sub_answers:
                 _validate_level(
                     item.parameters,
-                    level_keys[item.name],
+                    sub_answers,
                     errors,
                     path_prefix=f"{path_prefix}{item.name}.",
                     strict=strict,
                 )
-            elif not item.optional:
+            elif not item.optional and strict:
                 # Missing mandatory subsection is reported as an error if strict.
-                if strict:
-                    errors.append((path_prefix + item.name, "Missing subsection"))
+                errors.append((path_prefix + item.name, "Missing subsection"))
             continue
 
         full = f"{path_prefix}{item.name}"
-        if item.name not in level_keys:
+        if item.name not in local:
             if item.required:
                 errors.append((full, "Missing required parameter"))
             continue
 
-        value = level_keys[item.name]
+        value = local[item.name]
         if isinstance(item, ScalarParameter):
             if not _scalar_ok(value, item.value_type):
                 errors.append((full, f"Expected {item.value_type}, got {type(value).__name__}"))

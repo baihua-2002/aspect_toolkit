@@ -983,6 +983,7 @@ def build_schema() -> List[ParameterType]:
                             "Output file format",
                             choices=["vtu", "hdf5", "gnuplot", "dx"],
                             default="vtu",
+                            required=False,
                         ),
                         P(
                             "Number of grouped files",
@@ -1027,6 +1028,7 @@ def build_schema() -> List[ParameterType]:
                             "Output file format",
                             choices=["vtu", "hdf5", "gnuplot", "dx"],
                             default="vtu",
+                            required=False,
                         ),
                     ],
                 ),
