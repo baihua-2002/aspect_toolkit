@@ -168,3 +168,24 @@ def parse_aspect_errors(stderr: str) -> str:
     if not findings:
         return "No structured errors parsed from stderr."
     return "\n".join(findings)
+
+
+def read_prm_file(path: str) -> str:
+    """Read and return the content of a .prm file."""
+    try:
+        return Path(path).read_text(encoding="utf-8")
+    except Exception as e:
+        return f"Read error: {e}"
+
+
+def write_raw_prm(path: str, content: str) -> str:
+    """Write raw .prm file content directly to disk.
+    Use this when fixing existing .prm files where you know the exact text changes needed.
+    """
+    try:
+        p = Path(path)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(content, encoding="utf-8")
+        return f"Written {len(content)} bytes to {p.resolve()}"
+    except Exception as e:
+        return f"Write error: {e}"
