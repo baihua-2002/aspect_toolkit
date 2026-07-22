@@ -5,7 +5,17 @@
 * 运行指定的`.prm`文件，获得结果
 
 ## 查询文档 RAG系统
-* 稍后实现
+* 已实现：参数检索 + 专家案例检索（统一入口）
+* 详见 [RAG/readme.md](RAG/readme.md)
+
+```
+RAG/
+├── parameter_searcher.py    # 参数检索器（1594 条 ASPECT 参数定义）
+├── case_searcher.py         # 专家案例检索器（文献清洗，待填充）
+├── rag.py                   # 统一入口 AspectRAG
+├── parameters.json          # 参数定义数据源
+└── cases.json               # 专家案例数据源（空模板）
+```
 
 ## MVP
 
