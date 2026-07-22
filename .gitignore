@@ -24,3 +24,6 @@ runs/
 
 # Generated examples
 generated_examples/
+
+# Test/generated .prm files at project root
+/*.prm
