@@ -22,8 +22,14 @@ wheels/
 # ASPECT run outputs
 runs/
 
+# Baseline test outputs
+output-baseline-test/
+
 # Generated examples
 generated_examples/
 
-# Test/generated .prm files at project root
-/*.prm
+# Reference materials
+参考/
+
+# Test/generated .prm files (anywhere)
+*.prm
