@@ -161,6 +161,11 @@ class ParameterSearcher:
         doc_lower = param.documentation.lower()
 
         score = 0
+        if name_lower == query:
+            # 精确同名（如查 "viscosity" 命中 Simple model 的 "Viscosity"）
+            # 必须压过所有复合名，否则会被同分字母序挤出 top-N，
+            # 导致 rag.py 的参数→案例反查断链
+            score += 5000
         if query in name_lower:
             score += 1000
         if query in section_lower:

@@ -33,3 +33,7 @@ generated_examples/
 
 # Test/generated .prm files (anywhere)
 *.prm
+
+runs/
+
+test_case/

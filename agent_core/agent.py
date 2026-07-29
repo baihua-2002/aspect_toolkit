@@ -15,6 +15,7 @@ from pydantic_ai.usage import UsageLimits
 from agent_core.tools import (
     search_parameters,
     search_cases,
+    get_case_detail,
     get_schema_overview,
     list_subsection,
     validate_answers,
@@ -36,7 +37,8 @@ Your workflow for creating new .prm files:
 2. Use `get_schema_overview` to understand available sections
 3. Use `list_subsection` to see ALL parameters in a specific subsection (e.g. "Material model.Simple model")
 4. Use `search_parameters` only when you need to find a parameter by keyword across sections
-5. Use `search_cases` to find similar expert simulation cases for reference
+5. Use `search_cases` to find similar expert simulation cases, then
+   `get_case_detail(case_id)` to read the full parameter decisions before reusing any values
 6. Generate a complete answer dictionary mapping dotted parameter paths to values
 7. Use `validate_answers` to check your answers before assembling
 8. Use `assemble_prm` or `write_prm_file` to generate the .prm file
@@ -59,6 +61,9 @@ Key conventions:
 - Use search_parameters to verify parameter names and valid choices before generating answers
 - In 2D simulations, use x and y coordinates (NOT z)
 - Common mistakes: "Reference viscosity" should be "Viscosity" in Simple model
+- When reusing a value from a retrieved case, state which case_id it came from
+- If information needed is absent from retrieved cases/parameters, say so explicitly
+  instead of inventing values
 
 When responding, always explain your reasoning and the steps you took.\
 """
@@ -191,6 +196,7 @@ class AspectAgent:
             tools=[
                 search_parameters,
                 search_cases,
+                get_case_detail,
                 get_schema_overview,
                 list_subsection,
                 validate_answers,

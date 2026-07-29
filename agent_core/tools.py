@@ -43,21 +43,73 @@ def search_parameters(keyword: str, limit: int = 10) -> str:
     return "\n".join(lines)
 
 
+_CASE_DESC_EXCERPT = 300
+_CASE_DECISIONS_SHOWN = 8
+_CASE_RATIONALE_EXCERPT = 120
+_CASE_OUTCOME_EXCERPT = 200
+
+
+def _clip(text: str, limit: int) -> str:
+    """Clip long text, marking truncation explicitly so the agent knows more exists."""
+    text = text.strip()
+    if len(text) <= limit:
+        return text
+    return text[:limit].rstrip() + "…[truncated]"
+
+
 def search_cases(keyword: str, domain: str | None = None, limit: int = 5) -> str:
     """Search expert simulation cases by keyword.
-    Returns matching cases with title, domain, parameter decisions, and outcome.
+    Returns matching cases with title, domain, an excerpt of the parameter
+    decisions, and outcome. Call get_case_detail(case_id) for the full record
+    before reusing any values from a case.
     """
     results = _case_searcher.search(keyword, domain=domain, limit=limit)
     if not results:
         return "No cases found."
     lines = []
     for c in results:
-        lines.append(f"[{c.case_id}] {c.title} (domain: {c.domain})")
-        lines.append(f"  description: {c.description[:200]}")
-        if c.parameter_decisions:
-            for d in c.parameter_decisions[:5]:
-                lines.append(f"  param: {d.parameter_name} = {d.value} ({d.rationale[:80]})")
-        lines.append(f"  outcome: {c.outcome[:100]}")
+        lines.append(f"[{c.case_id}] {c.title} (domain: {c.domain}, success: {c.success})")
+        lines.append(f"  description: {_clip(c.description, _CASE_DESC_EXCERPT)}")
+        for d in c.parameter_decisions[:_CASE_DECISIONS_SHOWN]:
+            lines.append(
+                f"  param: {d.parameter_name} = {d.value} ({_clip(d.rationale, _CASE_RATIONALE_EXCERPT)})"
+            )
+        remaining = len(c.parameter_decisions) - _CASE_DECISIONS_SHOWN
+        if remaining > 0:
+            lines.append(
+                f'  … {remaining} more parameter decision(s) — call get_case_detail("{c.case_id}")'
+            )
+        lines.append(f"  outcome: {_clip(c.outcome, _CASE_OUTCOME_EXCERPT)}")
+    return "\n".join(lines)
+
+
+def get_case_detail(case_id: str) -> str:
+    """Get the complete record of an expert simulation case by its case_id.
+    Returns ALL parameter decisions (name, value, rationale with source location),
+    full description, outcome, source and tags. Use this after search_cases to
+    ground parameter values in the case before generating answers.
+    """
+    c = _case_searcher.get(case_id)
+    if c is None:
+        available = ", ".join(x.case_id for x in _case_searcher.all_cases()[:10]) or "(none)"
+        return f"Case not found: '{case_id}'. Available case_ids: {available}"
+    lines = [
+        f"[{c.case_id}] {c.title}",
+        f"domain: {c.domain} | success: {c.success}",
+        f"source: {c.source}",
+        f"tags: {', '.join(c.tags) if c.tags else '(none)'}",
+        "description:",
+        c.description,
+        f"parameter_decisions ({len(c.parameter_decisions)}):",
+    ]
+    for d in c.parameter_decisions:
+        lines.append(f"  - {d.parameter_name} = {d.value}")
+        if d.rationale:
+            lines.append(f"    rationale: {d.rationale}")
+    lines.append("outcome:")
+    lines.append(c.outcome)
+    if c.prm_path and c.prm_path != "not stated":
+        lines.append(f"prm_path: {c.prm_path}")
     return "\n".join(lines)
 
 

@@ -85,12 +85,18 @@ class CaseSearcher:
         return None
 
     def by_parameter(self, parameter_name: str) -> list[SimulationCase]:
-        """查找使用了某个参数的所有案例（用于参数→案例关联检索）"""
+        """查找使用了某个参数的所有案例（用于参数→案例关联检索）。
+
+        案例中存的通常是完整点路径（如 "Material model.Simple model.Viscosity"），
+        而调用方传入的可能是裸参数名（如 "Viscosity"），因此除全等外还按
+        点路径末段匹配，避免参数→案例关联断链。
+        """
         target = parameter_name.strip().lower()
         result: list[SimulationCase] = []
         for c in self._cases:
             for d in c.parameter_decisions:
-                if d.parameter_name.lower() == target:
+                name = d.parameter_name.lower()
+                if name == target or name.endswith("." + target):
                     result.append(c)
                     break
         return result

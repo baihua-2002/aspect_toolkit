@@ -1,5 +1,258 @@
 {
-  "source": "expert_cases",
-  "count": 0,
-  "cases": []
+  "cases": [
+    {
+      "case_id": "ncc-benchmark-2013",
+      "title": "I2VIS程序benchmark验证（Blankenbach等模型1a和2a）",
+      "domain": "benchmark",
+      "description": "使用I2VIS程序对Blankenbach等(1989)的标准对流算例进行验证，包括模型1a（常粘滞系数）和模型2a（粘滞系数随温度和深度变化）。计算区域1000 km × 1000 km，网格51×51，40000个示踪点。边界条件：所有边自由滑移，顶部温度273 K，底部温度1273 K，左右绝热。瑞利数通过参数计算。结果与基准值对比，Nusselt数和Vrms误差在1%以内。",
+      "source": "乔彦超, 郭子祺, 石耀霖. 数值模拟华北克拉通岩石圈热对流侵蚀减薄机制. 中国科学: 地球科学, 2013, 43: 642-652",
+      "prm_path": "not stated",
+      "outcome": "模型1a: Nusselt数误差0.98%, Vrms误差0.5%; 模型2a: Nusselt数误差0.14%, Vrms误差1%。表明程序可靠。",
+      "success": true,
+      "parameter_decisions": [
+        {
+          "parameter_name": "Global parameters.No subsection.Dimension",
+          "value": "2",
+          "rationale": "(表1, p.3)"
+        },
+        {
+          "parameter_name": "Global parameters.No subsection.Use years instead of seconds",
+          "value": "true",
+          "rationale": "(表1, p.3) 时间单位隐含年"
+        },
+        {
+          "parameter_name": "Geometry model.Model name",
+          "value": "box",
+          "rationale": "(表1, p.3)"
+        },
+        {
+          "parameter_name": "Geometry model.Box.X extent",
+          "value": "1.0e6 m",
+          "rationale": "(表1, p.3)"
+        },
+        {
+          "parameter_name": "Geometry model.Box.Y extent",
+          "value": "1.0e6 m",
+          "rationale": "(表1, p.3)"
+        },
+        {
+          "parameter_name": "Material model.Model name",
+          "value": "simple",
+          "rationale": "(表1, p.3)"
+        },
+        {
+          "parameter_name": "Material model.Simple model.Reference density",
+          "value": "4000 kg/m3",
+          "rationale": "(表1, p.3)"
+        },
+        {
+          "parameter_name": "Material model.Simple model.Thermal expansion coefficient",
+          "value": "2.5e-5 1/K",
+          "rationale": "(表1, p.3)"
+        },
+        {
+          "parameter_name": "Material model.Simple model.Reference specific heat",
+          "value": "1250 J/(kg K)",
+          "rationale": "(表1, p.3)"
+        },
+        {
+          "parameter_name": "Material model.Simple model.Thermal conductivity",
+          "value": "5 W/(m K)",
+          "rationale": "(表1, p.3)"
+        },
+        {
+          "parameter_name": "Material model.Simple model.Viscosity",
+          "value": "1.0e23 Pa s",
+          "rationale": "(表1, p.3)"
+        },
+        {
+          "parameter_name": "Gravity model.Model name",
+          "value": "vertical",
+          "rationale": "(表1, p.3)"
+        },
+        {
+          "parameter_name": "Gravity model.Vertical.Magnitude",
+          "value": "10 m/s2",
+          "rationale": "(表1, p.3)"
+        },
+        {
+          "parameter_name": "Boundary temperature model.Box.Top temperature",
+          "value": "273 K",
+          "rationale": "(表1, p.3)"
+        },
+        {
+          "parameter_name": "Boundary temperature model.Box.Bottom temperature",
+          "value": "1273 K",
+          "rationale": "(表1, p.3)"
+        },
+        {
+          "parameter_name": "Boundary temperature model.Fixed temperature boundary indicators",
+          "value": "top, bottom",
+          "rationale": "(表1, p.3)"
+        },
+        {
+          "parameter_name": "Boundary velocity model.Zero velocity boundary indicators",
+          "value": "all",
+          "rationale": "(表1, p.3)"
+        },
+        {
+          "parameter_name": "Formulation.Formulation",
+          "value": "Boussinesq",
+          "rationale": "(表1, p.3) 隐含Boussinesq近似"
+        },
+        {
+          "parameter_name": "Viscosity depth-dependence parameter B ",
+          "value": "ln(1000) (模型2a)",
+          "rationale": "(表1, p.3)"
+        },
+        {
+          "parameter_name": "Grid resolution",
+          "value": "51 x 51",
+          "rationale": "(第1.2节, p.3)"
+        },
+        {
+          "parameter_name": "Number of markers",
+          "value": "40000",
+          "rationale": "(第1.2节, p.3)"
+        }
+      ],
+      "tags": [
+        "I2VIS",
+        "benchmark",
+        "Blankenbach",
+        "mantle convection"
+      ]
+    },
+    {
+      "case_id": "ncc-thermal-thinning-2013",
+      "title": "华北克拉通岩石圈热对流侵蚀减薄数值模拟",
+      "domain": "craton evolution",
+      "description": "使用I2VIS程序模拟华北克拉通岩石圈在底部温度升高后由小尺度地幔对流驱动的热侵蚀减薄。模型区域700 km × 700 km，代表上地幔-岩石圈系统。采用201×201网格，400×400个示踪点。边界条件：所有边自由滑移；顶部温度273 K，底部温度从初始稳定态1673 K升高至1773-2073 K；左右绝热。粘滞系数随温度指数变化，初始参考等效粘滞系数η0取两种值：1.0e22 Pa s和1.0e23 Pa s。时间步长5000年，计算至减薄稳定。初始岩石圈厚度200 km。通过参数扫描（两种η0 × 四种底部温度）得到减薄速率和最终厚度。",
+      "source": "乔彦超, 郭子祺, 石耀霖. 数值模拟华北克拉通岩石圈热对流侵蚀减薄机制. 中国科学: 地球科学, 2013, 43: 642-652",
+      "prm_path": "not stated",
+      "outcome": "η0=1e22 Pa s时：底边界温度1773 K: 最终厚度126.25 km, 减薄73.75 km, 时间15 Ma, 速率4.92e-3 m/a; 1873 K: 118.75 km, 81.25 km, 15 Ma, 5.42e-3 m/a; 1973 K: 103.75 km, 96.25 km, 14.95 Ma, 6.44e-3 m/a; 2073 K: 100.00 km, 100.00 km, 14.55 Ma, 6.87e-3 m/a。η0=1e23 Pa s时：1773 K: 135 km, 65 km, 15 Ma, 4.33e-3 m/a; 1873 K: 132.5 km, 67.5 km, 15 Ma, 4.5e-3 m/a; 1973 K: 127.5 km, 72.5 km, 14.7 Ma, 4.93e-3 m/a (以表6为准，正文误作1.93e-3); 2073 K: 126.25 km, 73.75 km, 14 Ma, 5.27e-3 m/a。初始稳定态底边界1673 K时未发生大规模减薄，速度量级1e-13，热传导为主。",
+      "success": true,
+      "parameter_decisions": [
+        {
+          "parameter_name": "Global parameters.No subsection.Dimension",
+          "value": "2",
+          "rationale": "(第1.3节, p.4)"
+        },
+        {
+          "parameter_name": "Global parameters.No subsection.Use years instead of seconds",
+          "value": "true",
+          "rationale": "(第1.3节, p.4)"
+        },
+        {
+          "parameter_name": "Geometry model.Model name",
+          "value": "box",
+          "rationale": "(第1.3节, p.4)"
+        },
+        {
+          "parameter_name": "Geometry model.Box.X extent",
+          "value": "7.0e5 m",
+          "rationale": "(第1.3节, p.4)"
+        },
+        {
+          "parameter_name": "Geometry model.Box.Y extent",
+          "value": "7.0e5 m",
+          "rationale": "(第1.3节, p.4)"
+        },
+        {
+          "parameter_name": "Material model.Model name",
+          "value": "simple",
+          "rationale": "(表1, p.3 参数用于减薄模型)"
+        },
+        {
+          "parameter_name": "Material model.Simple model.Reference density",
+          "value": "4000 kg/m3",
+          "rationale": "(表1, p.3 参数用于减薄模型)"
+        },
+        {
+          "parameter_name": "Material model.Simple model.Thermal expansion coefficient",
+          "value": "2.5e-5 1/K",
+          "rationale": "(表1, p.3 参数用于减薄模型)"
+        },
+        {
+          "parameter_name": "Material model.Simple model.Reference specific heat",
+          "value": "1250 J/(kg K)",
+          "rationale": "(表1, p.3 参数用于减薄模型)"
+        },
+        {
+          "parameter_name": "Material model.Simple model.Thermal conductivity",
+          "value": "5 W/(m K)",
+          "rationale": "(表1, p.3 参数用于减薄模型)"
+        },
+        {
+          "parameter_name": "Material model.Simple model.Viscosity",
+          "value": "1.0e23 Pa s",
+          "rationale": "(第2节, p.5)"
+        },
+        {
+          "parameter_name": "Gravity model.Model name",
+          "value": "vertical",
+          "rationale": "(表1, p.3 参数用于减薄模型)"
+        },
+        {
+          "parameter_name": "Gravity model.Vertical.Magnitude",
+          "value": "10 m/s2",
+          "rationale": "(表1, p.3 参数用于减薄模型)"
+        },
+        {
+          "parameter_name": "Boundary temperature model.Box.Top temperature",
+          "value": "273 K",
+          "rationale": "(第1.3节, p.4)"
+        },
+        {
+          "parameter_name": "Boundary temperature model.Box.Bottom temperature",
+          "value": "2073 K",
+          "rationale": "(第2节, p.5)"
+        },
+        {
+          "parameter_name": "Boundary temperature model.Fixed temperature boundary indicators",
+          "value": "top, bottom",
+          "rationale": "(第1.3节, p.4)"
+        },
+        {
+          "parameter_name": "Boundary velocity model.Zero velocity boundary indicators",
+          "value": "all",
+          "rationale": "(第1.3节, p.4)"
+        },
+        {
+          "parameter_name": "Initial temperature model.Model name",
+          "value": "function (steady state with bottom 1673 K)",
+          "rationale": "(第1.3节, p.4)"
+        },
+        {
+          "parameter_name": "Formulation.Formulation",
+          "value": "Boussinesq",
+          "rationale": "(第1.1节, p.2)"
+        },
+        {
+          "parameter_name": "Grid resolution",
+          "value": "201 x 201",
+          "rationale": "(第1.3节, p.4)"
+        },
+        {
+          "parameter_name": "Number of markers",
+          "value": "400 x 400",
+          "rationale": "(第1.3节, p.4)"
+        },
+        {
+          "parameter_name": "Time step",
+          "value": "5000 a",
+          "rationale": "(第1.3节, p.4)"
+        }
+      ],
+      "tags": [
+        "华北克拉通",
+        "岩石圈减薄",
+        "热对流侵蚀",
+        "I2VIS",
+        "小尺度地幔对流",
+        "craton evolution",
+        "thermal thinning"
+      ]
+    }
+  ]
 }
