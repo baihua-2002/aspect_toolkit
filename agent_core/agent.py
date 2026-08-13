@@ -255,11 +255,19 @@ class AspectAgent:
                 system_prompt=NO_TOOLS_SYSTEM_PROMPT,
             )
 
-    def run_sync(self, user_request: str) -> AgentResult:
+    def run_sync(
+        self,
+        user_request: str,
+        *,
+        request_limit: int = 30,
+        tool_calls_limit: int = 50,
+    ) -> AgentResult:
         try:
             result = self._agent.run_sync(
                 user_request,
-                usage_limits=UsageLimits(request_limit=30, tool_calls_limit=50),
+                usage_limits=UsageLimits(
+                    request_limit=request_limit, tool_calls_limit=tool_calls_limit
+                ),
             )
         except Exception as e:
             return AgentResult(success=False, output=f"Agent error: {e}")
@@ -281,7 +289,13 @@ class AspectAgent:
             messages=messages,
         )
 
-    def run_streaming(self, user_request: str) -> StreamingRun:
+    def run_streaming(
+        self,
+        user_request: str,
+        *,
+        request_limit: int = 30,
+        tool_calls_limit: int = 50,
+    ) -> StreamingRun:
         """Run the agent in a background thread, streaming normalized events.
 
         Events are pushed onto ``StreamingRun.events``; a ``None`` sentinel
@@ -299,7 +313,9 @@ class AspectAgent:
                 result = await self._agent.run(
                     user_request,
                     event_stream_handler=_handler,
-                    usage_limits=UsageLimits(request_limit=30, tool_calls_limit=50),
+                    usage_limits=UsageLimits(
+                        request_limit=request_limit, tool_calls_limit=tool_calls_limit
+                    ),
                 )
                 holder["result"] = AgentResult(success=True, output=result.output)
             try:
