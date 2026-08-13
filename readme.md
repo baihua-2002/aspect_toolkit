@@ -85,13 +85,21 @@ result = connector.run("simulation.prm", timeout=3600)
 
 ### RAG — 检索增强系统
 
-1594 条 ASPECT 官方参数定义 + 专家仿真案例检索，为 LLM 提供领域知识。
+1594 条 ASPECT 官方参数定义 + 21 条专家仿真案例（19 官方 cookbook + 2 文献清洗）检索，
+为 LLM 提供领域知识。
 
 ```python
 from RAG import AspectRAG
 rag = AspectRAG()
 result = rag.search("mantle convection", domain="geodynamics")
 # result.parameters, result.cases
+```
+
+官方 cookbook → 专家案例（无需 LLM，参数忠实于 `.prm`）：
+
+```bash
+uv run python -m RAG.cookbook_importer --dry-run   # 预览不落盘
+uv run python -m RAG.cookbook_importer             # 合并进 cases.json
 ```
 
 文献清洗（OCR 文本 → 结构化案例库）：

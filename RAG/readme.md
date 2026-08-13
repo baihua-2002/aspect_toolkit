@@ -16,7 +16,16 @@ RAGResult (统一检索结果)
 | 文件 | 内容 | 状态 |
 |------|------|------|
 | `parameters.json` | 1594 条 ASPECT 参数定义 | 已有 |
-| `cases.json` | 专家模拟案例 | 空模板，待填充 |
+| `cases.json` | 专家模拟案例（2 条文献清洗 + 19 条官方 cookbook） | 已有 |
+| `cookbook_importer.py` | 官方 cookbook → 专家案例导入器 | 已有 |
+
+案例来源两类：
+- **官方 cookbook**（`cookbook_importer.py`，19 条）：从 `cookbooks/*.prm` 直接解析，
+  参数 100% 与官方配置一致，rationale 为人工撰写的物理意图。跨领域覆盖
+  benchmark（convection-box / van-keken / stokes）、球壳（2d/3d、bunge 深度相关粘度）、
+  熔融运移（mid-ocean-ridge）、组分场（passive/active/particles）、自由表面
+  （free-surface / crustal-deformation / continental-extension）、俯冲起始等。
+- **文献清洗**（`extractor.py`，2 条）：OCR 论文 → LLM 结构化抽取。
 
 ### 模块
 
@@ -25,6 +34,7 @@ RAGResult (统一检索结果)
 | `parameter_searcher.py` | 参数定义检索（关键词模糊搜索，name > section > doc 加权） |
 | `case_searcher.py` | 专家案例检索（关键词 + 领域过滤，title > tags > description 加权） |
 | `rag.py` | 统一入口 `AspectRAG`，一次搜索同时返回参数 + 案例 |
+| `cookbook_importer.py` | 官方 cookbook → 专家案例导入（解析 `.prm`，无 LLM） |
 
 ## 使用
 
@@ -33,7 +43,7 @@ from RAG import AspectRAG
 
 rag = AspectRAG()
 print(rag.parameter_count)  # 1594
-print(rag.case_count)       # 0（待填充）
+print(rag.case_count)       # 21（2 文献 + 19 cookbook）
 
 # 统一搜索：同时返回参数定义 + 相关案例
 result = rag.search("CFL")
@@ -61,14 +71,37 @@ cs.search("subduction", domain="mantle convection")  # 按领域过滤
 cs.by_parameter("CFL number")  # 反查使用某参数的案例
 ```
 
+## 案例库扩充
+
+### 官方 cookbook 导入（无需 LLM）
+
+从 ASPECT 官方 cookbooks 生成专家案例：参数 100% 忠实于 `.prm` 文件，
+rationale 为人工撰写的物理意图，支持多行续行、行内注释与 `include` 去重。
+
+```bash
+uv run python -m RAG.cookbook_importer --dry-run   # 预览不落盘
+uv run python -m RAG.cookbook_importer             # 合并进 cases.json
+uv run python -m RAG.cookbook_importer --overwrite # 覆盖同 case_id 旧记录
+```
+
+案例清单在 `cookbook_importer.py` 的 `CASES` 常量中定义，修改后重跑即增量更新。
+
+### 文献清洗（LLM 结构化抽取）
+
+```bash
+uv run python -m RAG.extractor test_case/OCR_xxx.md --dry-run  # 预览不落盘
+uv run python -m RAG.extractor test_case/OCR_xxx.md            # 合并进 cases.json
+```
+
 ## cases.json Schema
 
-供后续文献清洗时填充：
+`RAG/cookbook_importer.py` 与 `RAG/extractor.py` 共同按此 schema 生成案例
+（顶层 JSON 实测仅含 `cases` 键，`source`/`count` 为可选元信息）：
 
 ```json
 {
   "source": "expert_cases",
-  "count": 1,
+  "count": 21,
   "cases": [
     {
       "case_id": "cookbook-heat-flow",
