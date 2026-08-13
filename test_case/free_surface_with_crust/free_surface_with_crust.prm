@@ -1,14 +1,10 @@
-# This cookbook is an extension of the free_surface cookbook. Please see the
-# other cookbook for details about the free surface. This cookbook illustrates
-# how to use an external plugin to modify the material model, and what
-# influence a viscous crust has on the magnitude of surface topography.
+# Benchmark case: free surface with crust
+# 参考 cookbook free_surface_with_crust：自由表面 + 自定义"simpler with crust"材料模型插件
+# 参考答案：模拟时间削减至 ~30s 内可跑完；插件需先用 plugin/ 源码本地编译
 
-# This model loads an additional shared library, which provides another
-# material model that is not part of the main ASPECT code, but instead
-# lies in in a subdirectory of this cookbook folder.
-set Additional shared libraries            = /fs6/home/mgxliu/test/free_surface_with_crust/plugin/build/libsimpler_with_crust.release.so
+set Additional shared libraries            = plugin/build_mac/libsimpler_with_crust.release.so
 set Dimension                              = 2
-set End time                               = 2e7
+set End time                               = 4e5
 set Use years in output instead of seconds = true
 set Output directory                       = output-free_surface_with_crust
 set Maximum first time step                = 1e3
@@ -91,7 +87,7 @@ end
 # although it would significantly speed up this model
 subsection Mesh refinement
   set Initial adaptive refinement        = 0
-  set Initial global refinement          = 5
+  set Initial global refinement          = 4
   set Refinement fraction                = 0.3
   set Coarsening fraction                = 0.05
   set Strategy                           = temperature
@@ -103,7 +99,7 @@ subsection Postprocess
 
   subsection Visualization
     set List of output variables = material properties, depth
-    set Time between graphical output = 1.e6
+    set Time between graphical output = 4e5
 
     subsection Material properties
       set List of material properties = density, viscosity

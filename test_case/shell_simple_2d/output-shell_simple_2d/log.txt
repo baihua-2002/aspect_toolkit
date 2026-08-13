@@ -1,0 +1,475 @@
+-----------------------------------------------------------------------------
+--                             This is ASPECT                              --
+-- The Advanced Solver for Planetary Evolution, Convection, and Tectonics. --
+-----------------------------------------------------------------------------
+--     . version 3.1.0-pre
+--     . using deal.II 9.7.1
+--     .       with 32 bit indices
+--     .       with vectorization level 1 (SSE2, 2 doubles, 128 bits)
+--     . using Trilinos 16.1.0
+--     . using p4est 2.8.7
+--     . using Geodynamic World Builder 1.0.0
+--     . running in DEBUG mode
+--     . running with 1 MPI process
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+-- For information on how to cite ASPECT, see:
+--   https://aspect.geodynamics.org/citing.html?ver=3.1.0-pre&cbfheatflux=1&mf=1&sha=&src=code
+-----------------------------------------------------------------------------
+Number of active cells: 3,072 (on 6 levels)
+Number of degrees of freedom: 40,836 (25,090+3,201+12,545)
+
+*** Timestep 0:  t=0 years, dt=0 years
+   Solving temperature system... 0 iterations.
+   Solving Stokes system (GMG)... 13+0 iterations.
+
+   Postprocessing:
+     Writing graphical output:           output-shell_simple_2d/solution/solution-00000
+     RMS, max velocity:                  0.0704 m/year, 0.141 m/year
+     Temperature min/avg/max:            973 K, 2486 K, 4273 K
+     Heat fluxes through boundary parts: 2.269e+04 W, 8.455e+04 W, 0 W, 0 W
+     Writing depth average:              output-shell_simple_2d/depth_average
+
+*** Timestep 1:  t=313892 years, dt=313892 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 11+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.0844 m/year, 0.169 m/year
+     Temperature min/avg/max:            973 K, 2487 K, 4273 K
+     Heat fluxes through boundary parts: 1.784e+04 W, 1.757e+05 W, 0 W, 0 W
+
+*** Timestep 2:  t=575844 years, dt=261952 years
+   Solving temperature system... 18 iterations.
+   Solving Stokes system (GMG)... 11+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.0989 m/year, 0.199 m/year
+     Temperature min/avg/max:            973 K, 2487 K, 4273 K
+     Heat fluxes through boundary parts: 4.833e+04 W, 9.076e+04 W, 0 W, 0 W
+
+*** Timestep 3:  t=799267 years, dt=223423 years
+   Solving temperature system... 17 iterations.
+   Solving Stokes system (GMG)... 10+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.114 m/year, 0.228 m/year
+     Temperature min/avg/max:            973 K, 2488 K, 4273 K
+     Heat fluxes through boundary parts: 7.198e+04 W, 1.049e+05 W, 0 W, 0 W
+
+*** Timestep 4:  t=993930 years, dt=194664 years
+   Solving temperature system... 17 iterations.
+   Solving Stokes system (GMG)... 10+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.128 m/year, 0.257 m/year
+     Temperature min/avg/max:            973 K, 2489 K, 4273 K
+     Heat fluxes through boundary parts: 9.868e+04 W, 1.217e+05 W, 0 W, 0 W
+
+*** Timestep 5:  t=1.16652e+06 years, dt=172585 years
+   Solving temperature system... 17 iterations.
+   Solving Stokes system (GMG)... 10+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.142 m/year, 0.286 m/year
+     Temperature min/avg/max:            973 K, 2489 K, 4273 K
+     Heat fluxes through boundary parts: 1.283e+05 W, 1.409e+05 W, 0 W, 0 W
+
+*** Timestep 6:  t=1.32167e+06 years, dt=155158 years
+   Solving temperature system... 17 iterations.
+   Solving Stokes system (GMG)... 10+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.157 m/year, 0.314 m/year
+     Temperature min/avg/max:            973 K, 2490 K, 4273 K
+     Heat fluxes through boundary parts: 1.608e+05 W, 1.623e+05 W, 0 W, 0 W
+
+*** Timestep 7:  t=1.46275e+06 years, dt=141072 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 10+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.171 m/year, 0.342 m/year
+     Temperature min/avg/max:            973 K, 2491 K, 4275 K
+     Heat fluxes through boundary parts: 1.959e+05 W, 1.86e+05 W, 0 W, 0 W
+
+*** Timestep 8:  t=1.59221e+06 years, dt=129463 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 10+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.185 m/year, 0.369 m/year
+     Temperature min/avg/max:            973 K, 2492 K, 4286 K
+     Heat fluxes through boundary parts: 2.337e+05 W, 2.118e+05 W, 0 W, 0 W
+
+*** Timestep 9:  t=1.71195e+06 years, dt=119739 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 10+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.198 m/year, 0.397 m/year
+     Temperature min/avg/max:            973 K, 2494 K, 4298 K
+     Heat fluxes through boundary parts: 2.741e+05 W, 2.398e+05 W, 0 W, 0 W
+
+*** Timestep 10:  t=1.82343e+06 years, dt=111484 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 10+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.212 m/year, 0.423 m/year
+     Temperature min/avg/max:            973 K, 2495 K, 4310 K
+     Heat fluxes through boundary parts: 3.169e+05 W, 2.701e+05 W, 0 W, 0 W
+
+*** Timestep 11:  t=1.92783e+06 years, dt=104396 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.225 m/year, 0.449 m/year
+     Temperature min/avg/max:            973 K, 2496 K, 4324 K
+     Heat fluxes through boundary parts: 3.619e+05 W, 3.025e+05 W, 0 W, 0 W
+
+*** Timestep 12:  t=2.02608e+06 years, dt=98249.8 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.238 m/year, 0.475 m/year
+     Temperature min/avg/max:            973 K, 2498 K, 4338 K
+     Heat fluxes through boundary parts: 4.092e+05 W, 3.371e+05 W, 0 W, 0 W
+
+*** Timestep 13:  t=2.11895e+06 years, dt=92876.5 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.251 m/year, 0.501 m/year
+     Temperature min/avg/max:            973 K, 2499 K, 4353 K
+     Heat fluxes through boundary parts: 4.585e+05 W, 3.739e+05 W, 0 W, 0 W
+
+*** Timestep 14:  t=2.2071e+06 years, dt=88144.6 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.263 m/year, 0.525 m/year
+     Temperature min/avg/max:            973 K, 2501 K, 4368 K
+     Heat fluxes through boundary parts: 5.098e+05 W, 4.128e+05 W, 0 W, 0 W
+
+*** Timestep 15:  t=2.29105e+06 years, dt=83951.3 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.276 m/year, 0.55 m/year
+     Temperature min/avg/max:            973 K, 2502 K, 4385 K
+     Heat fluxes through boundary parts: 5.629e+05 W, 4.538e+05 W, 0 W, 0 W
+
+*** Timestep 16:  t=2.37126e+06 years, dt=80214.7 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.288 m/year, 0.573 m/year
+     Temperature min/avg/max:            973 K, 2504 K, 4402 K
+     Heat fluxes through boundary parts: 6.176e+05 W, 4.969e+05 W, 0 W, 0 W
+
+*** Timestep 17:  t=2.44813e+06 years, dt=76869.1 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.299 m/year, 0.597 m/year
+     Temperature min/avg/max:            973 K, 2506 K, 4420 K
+     Heat fluxes through boundary parts: 6.739e+05 W, 5.419e+05 W, 0 W, 0 W
+
+*** Timestep 18:  t=2.52199e+06 years, dt=73860.9 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.311 m/year, 0.619 m/year
+     Temperature min/avg/max:            973 K, 2508 K, 4439 K
+     Heat fluxes through boundary parts: 7.315e+05 W, 5.889e+05 W, 0 W, 0 W
+
+*** Timestep 19:  t=2.59314e+06 years, dt=71145.8 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.322 m/year, 0.642 m/year
+     Temperature min/avg/max:            973 K, 2510 K, 4459 K
+     Heat fluxes through boundary parts: 7.904e+05 W, 6.378e+05 W, 0 W, 0 W
+
+*** Timestep 20:  t=2.66183e+06 years, dt=68687.4 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.333 m/year, 0.663 m/year
+     Temperature min/avg/max:            973 K, 2512 K, 4479 K
+     Heat fluxes through boundary parts: 8.503e+05 W, 6.887e+05 W, 0 W, 0 W
+
+*** Timestep 21:  t=2.72828e+06 years, dt=66455 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.344 m/year, 0.684 m/year
+     Temperature min/avg/max:            973 K, 2514 K, 4500 K
+     Heat fluxes through boundary parts: 9.112e+05 W, 7.415e+05 W, 0 W, 0 W
+
+*** Timestep 22:  t=2.7927e+06 years, dt=64422.9 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.354 m/year, 0.705 m/year
+     Temperature min/avg/max:            973 K, 2516 K, 4521 K
+     Heat fluxes through boundary parts: 9.728e+05 W, 7.961e+05 W, 0 W, 0 W
+
+*** Timestep 23:  t=2.85527e+06 years, dt=62569 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.364 m/year, 0.725 m/year
+     Temperature min/avg/max:            973 K, 2518 K, 4544 K
+     Heat fluxes through boundary parts: 1.035e+06 W, 8.524e+05 W, 0 W, 0 W
+
+*** Timestep 24:  t=2.91615e+06 years, dt=60874.7 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.374 m/year, 0.744 m/year
+     Temperature min/avg/max:            973 K, 2521 K, 4567 K
+     Heat fluxes through boundary parts: 1.098e+06 W, 9.102e+05 W, 0 W, 0 W
+
+*** Timestep 25:  t=2.97547e+06 years, dt=59324 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.383 m/year, 0.763 m/year
+     Temperature min/avg/max:            973 K, 2523 K, 4590 K
+     Heat fluxes through boundary parts: 1.161e+06 W, 9.694e+05 W, 0 W, 0 W
+
+*** Timestep 26:  t=3.03337e+06 years, dt=57901.1 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.393 m/year, 0.781 m/year
+     Temperature min/avg/max:            973 K, 2525 K, 4615 K
+     Heat fluxes through boundary parts: 1.224e+06 W, 1.03e+06 W, 0 W, 0 W
+
+*** Timestep 27:  t=3.08996e+06 years, dt=56590.5 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.401 m/year, 0.798 m/year
+     Temperature min/avg/max:            973 K, 2528 K, 4640 K
+     Heat fluxes through boundary parts: 1.287e+06 W, 1.092e+06 W, 0 W, 0 W
+
+*** Timestep 28:  t=3.14535e+06 years, dt=55387.3 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.41 m/year, 0.815 m/year
+     Temperature min/avg/max:            973 K, 2531 K, 4665 K
+     Heat fluxes through boundary parts: 1.349e+06 W, 1.154e+06 W, 0 W, 0 W
+
+*** Timestep 29:  t=3.19963e+06 years, dt=54282.4 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.418 m/year, 0.832 m/year
+     Temperature min/avg/max:            973 K, 2533 K, 4692 K
+     Heat fluxes through boundary parts: 1.412e+06 W, 1.218e+06 W, 0 W, 0 W
+
+*** Timestep 30:  t=3.2529e+06 years, dt=53267.6 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.426 m/year, 0.847 m/year
+     Temperature min/avg/max:            973 K, 2536 K, 4718 K
+     Heat fluxes through boundary parts: 1.474e+06 W, 1.283e+06 W, 0 W, 0 W
+
+*** Timestep 31:  t=3.30524e+06 years, dt=52335.9 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.434 m/year, 0.862 m/year
+     Temperature min/avg/max:            973 K, 2539 K, 4746 K
+     Heat fluxes through boundary parts: 1.535e+06 W, 1.348e+06 W, 0 W, 0 W
+
+*** Timestep 32:  t=3.35672e+06 years, dt=51481 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.441 m/year, 0.876 m/year
+     Temperature min/avg/max:            973 K, 2541 K, 4773 K
+     Heat fluxes through boundary parts: 1.596e+06 W, 1.414e+06 W, 0 W, 0 W
+
+*** Timestep 33:  t=3.40742e+06 years, dt=50697.3 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.448 m/year, 0.89 m/year
+     Temperature min/avg/max:            973 K, 2544 K, 4802 K
+     Heat fluxes through boundary parts: 1.656e+06 W, 1.481e+06 W, 0 W, 0 W
+
+*** Timestep 34:  t=3.4574e+06 years, dt=49979.9 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.455 m/year, 0.903 m/year
+     Temperature min/avg/max:            973 K, 2547 K, 4831 K
+     Heat fluxes through boundary parts: 1.715e+06 W, 1.548e+06 W, 0 W, 0 W
+
+*** Timestep 35:  t=3.50672e+06 years, dt=49324.5 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.461 m/year, 0.915 m/year
+     Temperature min/avg/max:            973 K, 2550 K, 4860 K
+     Heat fluxes through boundary parts: 1.772e+06 W, 1.616e+06 W, 0 W, 0 W
+
+*** Timestep 36:  t=3.55545e+06 years, dt=48727 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.467 m/year, 0.927 m/year
+     Temperature min/avg/max:            973 K, 2553 K, 4890 K
+     Heat fluxes through boundary parts: 1.829e+06 W, 1.684e+06 W, 0 W, 0 W
+
+*** Timestep 37:  t=3.60358e+06 years, dt=48131.1 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.473 m/year, 0.938 m/year
+     Temperature min/avg/max:            973 K, 2556 K, 4921 K
+     Heat fluxes through boundary parts: 1.883e+06 W, 1.752e+06 W, 0 W, 0 W
+
+*** Timestep 38:  t=3.65115e+06 years, dt=47569.2 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.478 m/year, 0.948 m/year
+     Temperature min/avg/max:            973 K, 2560 K, 4952 K
+     Heat fluxes through boundary parts: 1.937e+06 W, 1.821e+06 W, 0 W, 0 W
+
+*** Timestep 39:  t=3.6982e+06 years, dt=47054.7 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.483 m/year, 0.958 m/year
+     Temperature min/avg/max:            973 K, 2563 K, 4983 K
+     Heat fluxes through boundary parts: 1.988e+06 W, 1.89e+06 W, 0 W, 0 W
+
+*** Timestep 40:  t=3.74479e+06 years, dt=46585.2 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.488 m/year, 0.966 m/year
+     Temperature min/avg/max:            973 K, 2566 K, 5014 K
+     Heat fluxes through boundary parts: 2.038e+06 W, 1.959e+06 W, 0 W, 0 W
+
+*** Timestep 41:  t=3.79095e+06 years, dt=46158.4 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.492 m/year, 0.975 m/year
+     Temperature min/avg/max:            973 K, 2569 K, 5046 K
+     Heat fluxes through boundary parts: 2.086e+06 W, 2.028e+06 W, 0 W, 0 W
+
+*** Timestep 42:  t=3.83672e+06 years, dt=45772.1 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.496 m/year, 0.982 m/year
+     Temperature min/avg/max:            973 K, 2573 K, 5078 K
+     Heat fluxes through boundary parts: 2.132e+06 W, 2.097e+06 W, 0 W, 0 W
+
+*** Timestep 43:  t=3.88214e+06 years, dt=45424.4 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.5 m/year, 0.989 m/year
+     Temperature min/avg/max:            973 K, 2576 K, 5111 K
+     Heat fluxes through boundary parts: 2.177e+06 W, 2.166e+06 W, 0 W, 0 W
+
+*** Timestep 44:  t=3.92726e+06 years, dt=45113.9 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.504 m/year, 0.995 m/year
+     Temperature min/avg/max:            973 K, 2579 K, 5144 K
+     Heat fluxes through boundary parts: 2.219e+06 W, 2.235e+06 W, 0 W, 0 W
+
+*** Timestep 45:  t=3.97209e+06 years, dt=44838.8 years
+   Solving temperature system... 16 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:                  0.507 m/year, 1 m/year
+     Temperature min/avg/max:            973 K, 2583 K, 5176 K
+     Heat fluxes through boundary parts: 2.259e+06 W, 2.304e+06 W, 0 W, 0 W
+
+*** Timestep 46:  t=4e+06 years, dt=27905.7 years
+   Solving temperature system... 12 iterations.
+   Solving Stokes system (GMG)... 9+0 iterations.
+
+   Postprocessing:
+     Writing graphical output:           output-shell_simple_2d/solution/solution-00001
+     RMS, max velocity:                  0.509 m/year, 1 m/year
+     Temperature min/avg/max:            973 K, 2585 K, 5197 K
+     Heat fluxes through boundary parts: 2.283e+06 W, 2.348e+06 W, 0 W, 0 W
+     Writing depth average:              output-shell_simple_2d/depth_average
+
+Termination requested by criterion: end time
+
+
++----------------------------------------------+------------+------------+
+| Total wallclock time elapsed since start     |      21.6s |            |
+|                                              |            |            |
+| Section                          | no. calls |  wall time | % of total |
++----------------------------------+-----------+------------+------------+
+| Assemble Stokes system rhs       |        47 |      3.13s |        15% |
+| Assemble temperature system      |        47 |      5.63s |        26% |
+| Build Stokes preconditioner      |        47 |      0.62s |       2.9% |
+| Build temperature preconditioner |        47 |     0.335s |       1.6% |
+| Initialization                   |         1 |    0.0719s |      0.33% |
+| Postprocessing                   |        47 |      1.67s |       7.7% |
+| Setup dof systems                |         1 |    0.0668s |      0.31% |
+| Setup initial conditions         |         1 |    0.0297s |      0.14% |
+| Setup matrices                   |         1 |    0.0165s |         0% |
+| Solve Stokes system              |        47 |      8.85s |        41% |
+| Solve temperature system         |        47 |     0.215s |         1% |
++----------------------------------+-----------+------------+------------+
+
+-- Total wallclock time elapsed including restarts: 22s
+-----------------------------------------------------------------------------
+-- For information on how to cite ASPECT, see:
+--   https://aspect.geodynamics.org/citing.html?ver=3.1.0-pre&cbfheatflux=1&mf=1&sha=&src=code
+-----------------------------------------------------------------------------

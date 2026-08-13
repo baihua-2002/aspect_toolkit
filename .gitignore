@@ -30,6 +30,7 @@ generated_examples/
 
 # Reference materials
 参考/
+reference/
 
 # Generated .prm files are ignored by default (kept out of version control):
 *.prm
@@ -48,3 +49,5 @@ test_case/*.pdf
 !test_case/subduction_initiation/**/*.prm
 !test_case/subduction/**/*.prm
 !test_case/ncc_thermal_thinning_pdf/**/*.prm
+!test_case/2d_cartesian_subduction_rift/**/*.prm
+

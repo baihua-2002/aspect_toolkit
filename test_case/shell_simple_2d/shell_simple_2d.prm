@@ -4,7 +4,7 @@
 
 set Dimension                              = 2
 set Use years instead of seconds           = true
-set End time                               = 1.5e9
+set End time                               = 4e6
 set Output directory                       = output-shell_simple_2d
 
 subsection Material model
@@ -56,9 +56,9 @@ end
 
 subsection Mesh refinement
   set Initial global refinement          = 5
-  set Initial adaptive refinement        = 4
+  set Initial adaptive refinement        = 0
   set Strategy                           = temperature
-  set Time steps between mesh refinement = 15
+  set Time steps between mesh refinement = 0
 end
 
 subsection Postprocess
@@ -66,12 +66,12 @@ subsection Postprocess
 
   subsection Visualization
     set Output format                 = vtu
-    set Time between graphical output = 1e6
+    set Time between graphical output = 4e6
     set Number of grouped files       = 0
   end
 
   subsection Depth average
-    set Time between graphical output = 1e6
+    set Time between graphical output = 4e6
   end
 end
 

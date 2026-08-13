@@ -1,0 +1,98 @@
+# 2D Cartesian Subduction-Rift benchmark case
+# 参考答案：使用 Geodynamic World Builder 文件定义初始温度与组分结构
+# （海洋板块-大陆板块-俯冲板片-上下地幔），模拟时间削减至 ~30s 内可跑完
+
+set Dimension                              = 2
+set Start time                             = 0
+set End time                               = 1e7
+set Use years in output instead of seconds = true
+set CFL number                             = 1.0
+set Nonlinear solver scheme                = single Advection, single Stokes
+set Output directory                       = output-2d_cartesian_subduction_rift
+set World builder file                     = 2d_cartesian_subduction_rift.wb
+
+subsection Geometry model
+  set Model name = box
+
+  subsection Box
+    set X extent  = 2000e3
+    set Y extent  = 750e3
+    set X repetitions = 10
+    set Y repetitions = 3
+  end
+end
+
+# 四面自由滑移：流场由密度差驱动的重力调整产生
+subsection Boundary velocity model
+  set Tangential velocity boundary indicators = left, right, bottom, top
+end
+
+subsection Gravity model
+  set Model name = vertical
+
+  subsection Vertical
+    set Magnitude = 9.81
+  end
+end
+
+subsection Boundary temperature model
+  set Fixed temperature boundary indicators = bottom, top
+  set List of model names = box
+
+  subsection Box
+    set Bottom temperature = 1573
+    set Top temperature    =  273
+  end
+end
+
+# 初始温度与组分均来自 World Builder 文件
+subsection Initial temperature model
+  set Model name = world builder
+end
+
+subsection Compositional fields
+  set Number of fields = 6
+  set Names of fields  = oceanic_crust, oceanic_lithosphere, \
+                         continental_crust, continental_lithosphere, \
+                         upper_mantle, lower_mantle
+end
+
+subsection Initial composition model
+  set List of model names = world builder
+
+  subsection World builder
+    set List of relevant compositions = oceanic_crust, oceanic_lithosphere, \
+                                        continental_crust, continental_lithosphere, \
+                                        upper_mantle, lower_mantle
+  end
+end
+
+# 各组分密度/粘度：地壳轻、岩石圈强、软流圈弱
+subsection Material model
+  set Model name = multicomponent
+
+  subsection Multicomponent
+    set Densities = 3300, 2900, 3300, 2700, 3200, 3300, 3400
+    set Viscosities = 1e21, 1e22, 1e23, 1e22, 1e23, 1e21, 1e21
+    set Viscosity averaging scheme = harmonic
+    set Thermal expansivities = 0
+  end
+end
+
+subsection Mesh refinement
+  set Initial global refinement          = 3
+  set Time steps between mesh refinement = 0
+end
+
+subsection Postprocess
+  set List of postprocessors = visualization, velocity statistics
+
+  subsection Visualization
+    set List of output variables = material properties
+    set Time between graphical output = 1e7
+
+    subsection Material properties
+      set List of material properties = density, viscosity
+    end
+  end
+end

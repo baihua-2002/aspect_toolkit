@@ -1,0 +1,234 @@
+-----------------------------------------------------------------------------
+--                             This is ASPECT                              --
+-- The Advanced Solver for Planetary Evolution, Convection, and Tectonics. --
+-----------------------------------------------------------------------------
+--     . version 3.1.0-pre
+--     . using deal.II 9.7.1
+--     .       with 32 bit indices
+--     .       with vectorization level 1 (SSE2, 2 doubles, 128 bits)
+--     . using Trilinos 16.1.0
+--     . using p4est 2.8.7
+--     . using Geodynamic World Builder 1.0.0
+--     . running in DEBUG mode
+--     . running with 1 MPI process
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+-- For information on how to cite ASPECT, see:
+--   https://aspect.geodynamics.org/citing.html?ver=3.1.0-pre&mf=1&sha=&src=code
+-----------------------------------------------------------------------------
+Number of active cells: 2,560 (on 5 levels)
+Number of degrees of freedom: 34,068 (20,930+2,673+10,465)
+
+Number of mesh deformation degrees of freedom: 20,930
+   Solving mesh displacement system... 0 iterations.
+*** Timestep 0:  t=0 years, dt=0 years
+   Solving mesh displacement system... 0 iterations.
+   Solving temperature system... 0 iterations.
+   Solving Stokes system (GMG)... 37+0 iterations.
+
+   Postprocessing:
+     Writing graphical output: output-free_surface_with_crust/solution/solution-00000
+     RMS, max velocity:        0.00369 m/year, 0.0161 m/year
+     Topography min/max:       0 m, 0 m
+
+*** Timestep 1:  t=1000 years, dt=1000 years
+   Solving mesh displacement system... 4 iterations.
+   Solving temperature system... 9 iterations.
+   Solving Stokes system (GMG)... 26+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:  0.00366 m/year, 0.016 m/year
+     Topography min/max: -1.719 m, 1.866 m
+
+*** Timestep 2:  t=2300 years, dt=1300 years
+   Solving mesh displacement system... 4 iterations.
+   Solving temperature system... 8 iterations.
+   Solving Stokes system (GMG)... 15+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:  0.00363 m/year, 0.0159 m/year
+     Topography min/max: -3.8 m, 4.137 m
+
+*** Timestep 3:  t=3990 years, dt=1690 years
+   Solving mesh displacement system... 4 iterations.
+   Solving temperature system... 8 iterations.
+   Solving Stokes system (GMG)... 16+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:  0.0036 m/year, 0.0158 m/year
+     Topography min/max: -6.324 m, 6.907 m
+
+*** Timestep 4:  t=6187 years, dt=2197 years
+   Solving mesh displacement system... 4 iterations.
+   Solving temperature system... 8 iterations.
+   Solving Stokes system (GMG)... 18+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:  0.00357 m/year, 0.0157 m/year
+     Topography min/max: -9.323 m, 10.22 m
+
+*** Timestep 5:  t=9043.1 years, dt=2856.1 years
+   Solving mesh displacement system... 4 iterations.
+   Solving temperature system... 8 iterations.
+   Solving Stokes system (GMG)... 20+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:  0.00353 m/year, 0.0156 m/year
+     Topography min/max: -12.79 m, 14.1 m
+
+*** Timestep 6:  t=12756 years, dt=3712.93 years
+   Solving mesh displacement system... 4 iterations.
+   Solving temperature system... 8 iterations.
+   Solving Stokes system (GMG)... 23+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:  0.00349 m/year, 0.0155 m/year
+     Topography min/max: -16.65 m, 18.49 m
+
+*** Timestep 7:  t=17582.8 years, dt=4826.81 years
+   Solving mesh displacement system... 4 iterations.
+   Solving temperature system... 8 iterations.
+   Solving Stokes system (GMG)... 24+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:  0.00345 m/year, 0.0154 m/year
+     Topography min/max: -20.75 m, 23.27 m
+
+*** Timestep 8:  t=23857.7 years, dt=6274.85 years
+   Solving mesh displacement system... 4 iterations.
+   Solving temperature system... 9 iterations.
+   Solving Stokes system (GMG)... 25+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:  0.00342 m/year, 0.0152 m/year
+     Topography min/max: -24.83 m, 28.2 m
+
+*** Timestep 9:  t=32015 years, dt=8157.31 years
+   Solving mesh displacement system... 4 iterations.
+   Solving temperature system... 9 iterations.
+   Solving Stokes system (GMG)... 26+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:  0.00339 m/year, 0.0151 m/year
+     Topography min/max: -28.52 m, 33 m
+
+*** Timestep 10:  t=42619.5 years, dt=10604.5 years
+   Solving mesh displacement system... 4 iterations.
+   Solving temperature system... 9 iterations.
+   Solving Stokes system (GMG)... 27+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:  0.00337 m/year, 0.015 m/year
+     Topography min/max: -31.45 m, 37.32 m
+
+*** Timestep 11:  t=56405.3 years, dt=13785.8 years
+   Solving mesh displacement system... 4 iterations.
+   Solving temperature system... 9 iterations.
+   Solving Stokes system (GMG)... 27+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:  0.00335 m/year, 0.0149 m/year
+     Topography min/max: -33.31 m, 40.91 m
+
+*** Timestep 12:  t=74327 years, dt=17921.6 years
+   Solving mesh displacement system... 4 iterations.
+   Solving temperature system... 9 iterations.
+   Solving Stokes system (GMG)... 19+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:  0.00333 m/year, 0.0149 m/year
+     Topography min/max: -34 m, 43.74 m
+
+*** Timestep 13:  t=97625 years, dt=23298.1 years
+   Solving mesh displacement system... 4 iterations.
+   Solving temperature system... 9 iterations.
+   Solving Stokes system (GMG)... 23+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:  0.00332 m/year, 0.0148 m/year
+     Topography min/max: -33.65 m, 46.01 m
+
+*** Timestep 14:  t=127913 years, dt=30287.5 years
+   Solving mesh displacement system... 4 iterations.
+   Solving temperature system... 9 iterations.
+   Solving Stokes system (GMG)... 24+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:  0.00331 m/year, 0.0147 m/year
+     Topography min/max: -32.61 m, 48.1 m
+
+*** Timestep 15:  t=167286 years, dt=39373.8 years
+   Solving mesh displacement system... 4 iterations.
+   Solving temperature system... 9 iterations.
+   Solving Stokes system (GMG)... 25+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:  0.00329 m/year, 0.0146 m/year
+     Topography min/max: -31.22 m, 50.37 m
+
+*** Timestep 16:  t=218472 years, dt=51185.9 years
+   Solving mesh displacement system... 4 iterations.
+   Solving temperature system... 9 iterations.
+   Solving Stokes system (GMG)... 25+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:  0.00326 m/year, 0.0145 m/year
+     Topography min/max: -29.67 m, 52.97 m
+
+*** Timestep 17:  t=285014 years, dt=66541.7 years
+   Solving mesh displacement system... 4 iterations.
+   Solving temperature system... 9 iterations.
+   Solving Stokes system (GMG)... 24+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:  0.00323 m/year, 0.0144 m/year
+     Topography min/max: -28.12 m, 55.9 m
+
+*** Timestep 18:  t=371518 years, dt=86504.2 years
+   Solving mesh displacement system... 4 iterations.
+   Solving temperature system... 9 iterations.
+   Solving Stokes system (GMG)... 24+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity:  0.00319 m/year, 0.0142 m/year
+     Topography min/max: -27.32 m, 59.1 m
+
+*** Timestep 19:  t=400000 years, dt=28482 years
+   Solving mesh displacement system... 4 iterations.
+   Solving temperature system... 9 iterations.
+   Solving Stokes system (GMG)... 27+0 iterations.
+
+   Postprocessing:
+     Writing graphical output: output-free_surface_with_crust/solution/solution-00001
+     RMS, max velocity:        0.00318 m/year, 0.0142 m/year
+     Topography min/max:       -27.25 m, 59.96 m
+
+Termination requested by criterion: end time
+
+
++----------------------------------------------+------------+------------+
+| Total wallclock time elapsed since start     |      16.2s |            |
+|                                              |            |            |
+| Section                          | no. calls |  wall time | % of total |
++----------------------------------+-----------+------------+------------+
+| Assemble Stokes system rhs       |        20 |      2.26s |        14% |
+| Assemble temperature system      |        20 |      2.66s |        16% |
+| Build Stokes preconditioner      |        20 |     0.226s |       1.4% |
+| Build temperature preconditioner |        20 |     0.103s |      0.63% |
+| Initialization                   |         1 |    0.0647s |       0.4% |
+| Mesh deformation                 |        20 |      1.66s |        10% |
+| Mesh deformation initialize      |         1 |    0.0196s |      0.12% |
+| Postprocessing                   |        20 |     0.222s |       1.4% |
+| Setup dof systems                |         1 |    0.0654s |       0.4% |
+| Setup initial conditions         |         1 |    0.0252s |      0.16% |
+| Setup matrices                   |         1 |    0.0112s |         0% |
+| Solve Stokes system              |        20 |      7.57s |        47% |
+| Solve temperature system         |        20 |    0.0417s |      0.26% |
++----------------------------------+-----------+------------+------------+
+
+-- Total wallclock time elapsed including restarts: 16s
+-----------------------------------------------------------------------------
+-- For information on how to cite ASPECT, see:
+--   https://aspect.geodynamics.org/citing.html?ver=3.1.0-pre&mf=1&sha=&src=code
+-----------------------------------------------------------------------------

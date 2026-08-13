@@ -1,0 +1,248 @@
+-----------------------------------------------------------------------------
+--                             This is ASPECT                              --
+-- The Advanced Solver for Planetary Evolution, Convection, and Tectonics. --
+-----------------------------------------------------------------------------
+--     . version 3.1.0-pre
+--     . using deal.II 9.7.1
+--     .       with 32 bit indices
+--     .       with vectorization level 1 (SSE2, 2 doubles, 128 bits)
+--     . using Trilinos 16.1.0
+--     . using p4est 2.8.7
+--     . using Geodynamic World Builder 1.0.0
+--     . running in DEBUG mode
+--     . running with 1 MPI process
+-----------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------
+-- For information on how to cite ASPECT, see:
+--   https://aspect.geodynamics.org/citing.html?ver=3.1.0-pre&GWB=1&mf=1&sha=&src=code
+-----------------------------------------------------------------------------
+Number of active cells: 1,920 (on 4 levels)
+Number of degrees of freedom: 73,026 (15,778+2,025+7,889+7,889+7,889+7,889+7,889+7,889+7,889)
+
+*** Timestep 0:  t=0 years, dt=0 years
+   Solving temperature system... 0 iterations.
+   Solving oceanic_crust system ... 0 iterations.
+   Solving oceanic_lithosphere system ... 0 iterations.
+   Solving continental_crust system ... 0 iterations.
+   Solving continental_lithosphere system ... 0 iterations.
+   Solving upper_mantle system ... 0 iterations.
+   Solving lower_mantle system ... 0 iterations.
+   Solving Stokes system (GMG)... 38+0 iterations.
+
+   Postprocessing:
+     Writing graphical output: output-2d_cartesian_subduction_rift/solution/solution-00000
+     RMS, max velocity:        0.00641 m/year, 0.0189 m/year
+
+*** Timestep 1:  t=659154 years, dt=659154 years
+   Solving temperature system... 12 iterations.
+   Solving oceanic_crust system ... 15 iterations.
+   Solving oceanic_lithosphere system ... 14 iterations.
+   Solving continental_crust system ... 11 iterations.
+   Solving continental_lithosphere system ... 12 iterations.
+   Solving upper_mantle system ... 13 iterations.
+   Solving lower_mantle system ... 11 iterations.
+   Solving Stokes system (GMG)... 34+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity: 0.00683 m/year, 0.0219 m/year
+
+*** Timestep 2:  t=1.23159e+06 years, dt=572433 years
+   Solving temperature system... 10 iterations.
+   Solving oceanic_crust system ... 17 iterations.
+   Solving oceanic_lithosphere system ... 16 iterations.
+   Solving continental_crust system ... 15 iterations.
+   Solving continental_lithosphere system ... 15 iterations.
+   Solving upper_mantle system ... 15 iterations.
+   Solving lower_mantle system ... 12 iterations.
+   Solving Stokes system (GMG)... 31+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity: 0.00671 m/year, 0.0219 m/year
+
+*** Timestep 3:  t=1.80126e+06 years, dt=569677 years
+   Solving temperature system... 9 iterations.
+   Solving oceanic_crust system ... 16 iterations.
+   Solving oceanic_lithosphere system ... 14 iterations.
+   Solving continental_crust system ... 14 iterations.
+   Solving continental_lithosphere system ... 15 iterations.
+   Solving upper_mantle system ... 14 iterations.
+   Solving lower_mantle system ... 11 iterations.
+   Solving Stokes system (GMG)... 30+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity: 0.00633 m/year, 0.0205 m/year
+
+*** Timestep 4:  t=2.41259e+06 years, dt=611328 years
+   Solving temperature system... 9 iterations.
+   Solving oceanic_crust system ... 15 iterations.
+   Solving oceanic_lithosphere system ... 14 iterations.
+   Solving continental_crust system ... 14 iterations.
+   Solving continental_lithosphere system ... 15 iterations.
+   Solving upper_mantle system ... 14 iterations.
+   Solving lower_mantle system ... 10 iterations.
+   Solving Stokes system (GMG)... 27+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity: 0.00605 m/year, 0.0196 m/year
+
+*** Timestep 5:  t=3.05296e+06 years, dt=640363 years
+   Solving temperature system... 9 iterations.
+   Solving oceanic_crust system ... 16 iterations.
+   Solving oceanic_lithosphere system ... 14 iterations.
+   Solving continental_crust system ... 15 iterations.
+   Solving continental_lithosphere system ... 15 iterations.
+   Solving upper_mantle system ... 14 iterations.
+   Solving lower_mantle system ... 10 iterations.
+   Solving Stokes system (GMG)... 29+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity: 0.00586 m/year, 0.0184 m/year
+
+*** Timestep 6:  t=3.73424e+06 years, dt=681279 years
+   Solving temperature system... 9 iterations.
+   Solving oceanic_crust system ... 16 iterations.
+   Solving oceanic_lithosphere system ... 15 iterations.
+   Solving continental_crust system ... 15 iterations.
+   Solving continental_lithosphere system ... 15 iterations.
+   Solving upper_mantle system ... 14 iterations.
+   Solving lower_mantle system ... 10 iterations.
+   Solving Stokes system (GMG)... 28+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity: 0.00559 m/year, 0.017 m/year
+
+*** Timestep 7:  t=4.46755e+06 years, dt=733319 years
+   Solving temperature system... 9 iterations.
+   Solving oceanic_crust system ... 16 iterations.
+   Solving oceanic_lithosphere system ... 15 iterations.
+   Solving continental_crust system ... 15 iterations.
+   Solving continental_lithosphere system ... 15 iterations.
+   Solving upper_mantle system ... 14 iterations.
+   Solving lower_mantle system ... 10 iterations.
+   Solving Stokes system (GMG)... 28+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity: 0.00527 m/year, 0.0161 m/year
+
+*** Timestep 8:  t=5.24711e+06 years, dt=779553 years
+   Solving temperature system... 9 iterations.
+   Solving oceanic_crust system ... 16 iterations.
+   Solving oceanic_lithosphere system ... 15 iterations.
+   Solving continental_crust system ... 15 iterations.
+   Solving continental_lithosphere system ... 15 iterations.
+   Solving upper_mantle system ... 14 iterations.
+   Solving lower_mantle system ... 10 iterations.
+   Solving Stokes system (GMG)... 26+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity: 0.00499 m/year, 0.0155 m/year
+
+*** Timestep 9:  t=6.05557e+06 years, dt=808465 years
+   Solving temperature system... 8 iterations.
+   Solving oceanic_crust system ... 16 iterations.
+   Solving oceanic_lithosphere system ... 15 iterations.
+   Solving continental_crust system ... 15 iterations.
+   Solving continental_lithosphere system ... 15 iterations.
+   Solving upper_mantle system ... 14 iterations.
+   Solving lower_mantle system ... 10 iterations.
+   Solving Stokes system (GMG)... 27+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity: 0.00472 m/year, 0.0147 m/year
+
+*** Timestep 10:  t=6.90009e+06 years, dt=844513 years
+   Solving temperature system... 8 iterations.
+   Solving oceanic_crust system ... 15 iterations.
+   Solving oceanic_lithosphere system ... 15 iterations.
+   Solving continental_crust system ... 14 iterations.
+   Solving continental_lithosphere system ... 15 iterations.
+   Solving upper_mantle system ... 14 iterations.
+   Solving lower_mantle system ... 10 iterations.
+   Solving Stokes system (GMG)... 27+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity: 0.00445 m/year, 0.0141 m/year
+
+*** Timestep 11:  t=7.793e+06 years, dt=892920 years
+   Solving temperature system... 8 iterations.
+   Solving oceanic_crust system ... 15 iterations.
+   Solving oceanic_lithosphere system ... 14 iterations.
+   Solving continental_crust system ... 15 iterations.
+   Solving continental_lithosphere system ... 15 iterations.
+   Solving upper_mantle system ... 14 iterations.
+   Solving lower_mantle system ... 10 iterations.
+   Solving Stokes system (GMG)... 25+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity: 0.00417 m/year, 0.0133 m/year
+
+*** Timestep 12:  t=8.73907e+06 years, dt=946063 years
+   Solving temperature system... 8 iterations.
+   Solving oceanic_crust system ... 15 iterations.
+   Solving oceanic_lithosphere system ... 14 iterations.
+   Solving continental_crust system ... 15 iterations.
+   Solving continental_lithosphere system ... 15 iterations.
+   Solving upper_mantle system ... 13 iterations.
+   Solving lower_mantle system ... 10 iterations.
+   Solving Stokes system (GMG)... 24+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity: 0.00389 m/year, 0.0125 m/year
+
+*** Timestep 13:  t=9.74176e+06 years, dt=1.0027e+06 years
+   Solving temperature system... 8 iterations.
+   Solving oceanic_crust system ... 15 iterations.
+   Solving oceanic_lithosphere system ... 14 iterations.
+   Solving continental_crust system ... 15 iterations.
+   Solving continental_lithosphere system ... 15 iterations.
+   Solving upper_mantle system ... 13 iterations.
+   Solving lower_mantle system ... 10 iterations.
+   Solving Stokes system (GMG)... 25+0 iterations.
+
+   Postprocessing:
+     RMS, max velocity: 0.00363 m/year, 0.0116 m/year
+
+*** Timestep 14:  t=1e+07 years, dt=258235 years
+   Solving temperature system... 6 iterations.
+   Solving oceanic_crust system ... 11 iterations.
+   Solving oceanic_lithosphere system ... 10 iterations.
+   Solving continental_crust system ... 11 iterations.
+   Solving continental_lithosphere system ... 11 iterations.
+   Solving upper_mantle system ... 10 iterations.
+   Solving lower_mantle system ... 8 iterations.
+   Solving Stokes system (GMG)... 23+0 iterations.
+
+   Postprocessing:
+     Writing graphical output: output-2d_cartesian_subduction_rift/solution/solution-00001
+     RMS, max velocity:        0.00357 m/year, 0.0114 m/year
+
+Termination requested by criterion: end time
+
+
++----------------------------------------------+------------+------------+
+| Total wallclock time elapsed since start     |      28.9s |            |
+|                                              |            |            |
+| Section                          | no. calls |  wall time | % of total |
++----------------------------------+-----------+------------+------------+
+| Assemble Stokes system rhs       |        15 |      1.77s |       6.1% |
+| Assemble composition system      |        90 |      15.2s |        53% |
+| Assemble temperature system      |        15 |      2.55s |       8.8% |
+| Build Stokes preconditioner      |        15 |     0.121s |      0.42% |
+| Build composition preconditioner |        90 |     0.377s |       1.3% |
+| Build temperature preconditioner |        15 |    0.0602s |      0.21% |
+| Initialization                   |         1 |     0.173s |       0.6% |
+| Postprocessing                   |        15 |     0.138s |      0.48% |
+| Setup dof systems                |         1 |    0.0318s |      0.11% |
+| Setup initial conditions         |         1 |       1.9s |       6.6% |
+| Setup matrices                   |         1 |    0.0713s |      0.25% |
+| Solve Stokes system              |        15 |       5.4s |        19% |
+| Solve composition system         |        90 |     0.258s |      0.89% |
+| Solve temperature system         |        15 |    0.0306s |      0.11% |
++----------------------------------+-----------+------------+------------+
+
+-- Total wallclock time elapsed including restarts: 29s
+-----------------------------------------------------------------------------
+-- For information on how to cite ASPECT, see:
+--   https://aspect.geodynamics.org/citing.html?ver=3.1.0-pre&GWB=1&mf=1&sha=&src=code
+-----------------------------------------------------------------------------

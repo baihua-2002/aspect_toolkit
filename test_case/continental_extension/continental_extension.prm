@@ -1,29 +1,17 @@
-#### Continental Extension Cookbook
-# This cookbook is based off numerous published studies, five of which are listed below.
-# For additional information, see these publications and references therein.
-#   1. Brune, S., Heine, C., Perez-Gussinye, M., and Sobolev, S.V. (2014), Nat. Comm., v.5, n.4014,
-#      Rift migration explains continental margin asymmetry and crustal hyperextension
-#   2. Huismans, R., and Beaumont, C. (2011), Nature, v.473, p.71-75.
-#      Depth-dependent extension, two-stage breakup and cratonic underplating at rifted margins
-#   3. Naliboff, J., and Buiter, S.H. (2015), Earth Planet. Sci. Lett., v.421, p.58-67,
-#      "Rift Reactivation and migration during multiphase extension"
-#   4. Naliboff, J., Glerum, A., Sascha, S., Peron-Pinvidic, G., and Wrona, T. (2020), Geophys.
-#      Res. Lett., 47, e2019GL086611, "Development of 3‐D rift heterogeneity through fault
-#      network evolution"
-#   5. Sandiford, D., Brune, S., Glerum, A., Naliboff, J., and Whittaker, J.M. (2021), Geophys.
-#      Geochem. Geosys., 22, e2021GC009681, "Kinematics of footwall exhumation at oceanic
-#      detachment faults: Solid-block rotation and apparent unbending"
+#### Continental Extension Benchmark Case
+# 参考 cookbook continental_extension：陆缘伸展 + 粘塑性流变 + 自由表面 + 粒子
+# 参考答案：模拟时间与网格削减至 ~30s 内可跑完
 
 ####  Global parameters
 set Dimension                              = 2
 set Start time                             = 0
-set End time                               = 5e6
+set End time                               = 2e4
 set Use years in output instead of seconds = true
 set Nonlinear solver scheme                = iterated Advection and Stokes
-set Nonlinear solver tolerance             = 1e-5
+set Nonlinear solver tolerance             = 1e-4
 set Max nonlinear iterations               = 200
 set CFL number                             = 0.5
-set Maximum time step                      = 10e3
+set Maximum time step                      = 5e3
 set Output directory                       = output-continental_extension
 set Pressure normalization                 = no
 
@@ -44,22 +32,12 @@ subsection Geometry model
   end
 end
 
-# Globally refine the mesh to 2.5 km spacing, and then
-# adaptively refine the mesh to 1.25 km spacing above y=50 km
-# and between x=40 and x=160 km. These values ensure areas
-# undergoing brittle deformation are in the high-resolution
-# region.
+# Globally refine the mesh, without adaptive refinement in the
+# benchmark (reduced from the cookbook for speed).
 subsection Mesh refinement
-  set Initial adaptive refinement        = 1
-  set Initial global refinement          = 3
+  set Initial adaptive refinement        = 0
+  set Initial global refinement          = 2
   set Time steps between mesh refinement = 0
-  set Strategy = minimum refinement function
-
-  subsection Minimum refinement function
-    set Coordinate system   = cartesian
-    set Variable names      = x,y
-    set Function expression = if ( y>=50e3 && x>=40.e3 && x<=160.e3, 4, 3)
-  end
 end
 
 # Use the Eisenstat Walker method to automatically determine the
@@ -258,8 +236,8 @@ subsection Material model
     set Thermal conductivities        = 2.5
     set Heat capacities               = 750.
 
-    # Density values of 1 are assigned to "strain" fields, which are not taken into
-    # account when computing material properties.
+    # Density values of 1 are assigned to "strain" fields, which are not taken
+    # into account when computing material properties.
     set Densities                     = background: 3300, \
                                         crust_upper: 2700, \
                                         crust_lower: 2900, \
@@ -313,7 +291,6 @@ subsection Material model
                                                     crust_lower: 0, \
                                                     mantle_lithosphere: 18.e-6
 
-
     # Plasticity parameters
     set Angles of internal friction = 30
     set Cohesions                   = 20.e6
@@ -351,24 +328,22 @@ subsection Particles
   set Particle generator name     = reference cell
   subsection Generator
     subsection Reference cell
-      set Number of particles per cell per direction = 7
+      set Number of particles per cell per direction = 5
     end
   end
 end
 
 # Post processing
 subsection Postprocess
-  set List of postprocessors = basic statistics, composition statistics, \
-                               heat flux densities, heat flux statistics, \
-                               material statistics, mass flux statistics, \
-                               particles, pressure statistics, \
-                               temperature statistics, topography, \
-                               velocity statistics, visualization
+  set List of postprocessors = basic statistics, \
+                               velocity statistics, \
+                               topography, \
+                               visualization
 
   subsection Visualization
-    set List of output variables = material properties, heat flux map, named additional outputs, strain rate
+    set List of output variables = material properties
     set Output format                 = vtu
-    set Time between graphical output = 100.e3
+    set Time between graphical output = 2e4
     set Interpolate output            = true
 
     subsection Material properties

@@ -69,6 +69,31 @@ When responding, always explain your reasoning and the steps you took.\
 """
 
 
+# 无工具变体：纯 LLM、不暴露任何工具，直接输出完整 .prm 文件内容。
+# 用于 benchmark 对照实验（有工具 vs 无工具）评估工具链对 ASPECT 终产物的精度贡献。
+NO_TOOLS_SYSTEM_PROMPT = (
+    "You are an expert ASPECT simulation configuration assistant. "
+    "ASPECT is a scientific software for simulating mantle convection and geodynamic processes.\n"
+    "You have NO tools available: you cannot search a parameter database, cannot run ASPECT, "
+    "and cannot write files. You must answer purely from your own knowledge.\n\n"
+    "Your single task: given a user's simulation requirement, produce a *complete, valid ASPECT "
+    ".prm parameter file* directly. Output ONLY the .prm content, wrapped in a single fenced code "
+    "block with the ```prm language tag.\n\n"
+    "Rules for the .prm you generate:\n"
+    "- Include every required parameter; ASPECT .prm syntax uses 'set Name = value' at top level and "
+    "'subsection Name ... end' blocks for grouped settings.\n"
+    "- Always choose and set 'Geometry model' 'Model name', 'Material model' 'Model name', etc. with "
+    "the concrete parameters needed by the chosen model.\n"
+    "- For a 2D box in ASPECT, use x and y extents/coordinates (NOT z).\n"
+    "- Set 'set End time' to a sensible value and a 'Nonlinear solver scheme'.\n"
+    "- Keep values physically reasonable and self-consistent; if the user gives specific numbers, "
+    "use exactly those numbers; otherwise use standard ASPECT defaults or typical geophysical values.\n"
+    "- If a required value is unknowable from the request, state it explicitly in a short comment "
+    "line (#) rather than silently inventing a value.\n"
+    "Do not output any prose before or after the fenced .prm block.\n"
+)
+
+
 @dataclass
 class AgentResult:
     success: bool
@@ -190,26 +215,45 @@ class StreamingRun:
 
 
 class AspectAgent:
-    def __init__(self, model: Model) -> None:
-        self._agent = Agent(
-            model,
-            tools=[
-                search_parameters,
-                search_cases,
-                get_case_detail,
-                get_schema_overview,
-                list_subsection,
-                validate_answers,
-                assemble_prm,
-                write_prm_file,
-                run_aspect_simulation,
-                parse_aspect_errors,
-                read_prm_file,
-                write_raw_prm,
-                patch_prm,
-            ],
-            system_prompt=SYSTEM_PROMPT,
-        )
+    def __init__(self, model: Model, use_tools: bool = True) -> None:
+        """Build the ASPECT configuration agent.
+
+        Args:
+            model: The pydantic-ai model to use.
+            use_tools: True (default) exposes the full 14-tool chain
+                (RAG search, schema overview, validate/assemble/write, run,
+                error repair). False builds a pure-LLM variant with no tools
+                that must output a complete .prm from knowledge alone — used
+                by benchmark_tools_compare.py for the with/without-tools
+                precision contrast.
+        """
+        self._use_tools = use_tools
+        if use_tools:
+            self._agent = Agent(
+                model,
+                tools=[
+                    search_parameters,
+                    search_cases,
+                    get_case_detail,
+                    get_schema_overview,
+                    list_subsection,
+                    validate_answers,
+                    assemble_prm,
+                    write_prm_file,
+                    run_aspect_simulation,
+                    parse_aspect_errors,
+                    read_prm_file,
+                    write_raw_prm,
+                    patch_prm,
+                ],
+                system_prompt=SYSTEM_PROMPT,
+            )
+        else:
+            self._agent = Agent(
+                model,
+                tools=[],
+                system_prompt=NO_TOOLS_SYSTEM_PROMPT,
+            )
 
     def run_sync(self, user_request: str) -> AgentResult:
         try:

@@ -1,0 +1,94 @@
+# Parameter file for replicating Matsumoto & Tomoda 1983 (subduction initiation)
+# Benchmark case: 二维俯冲起始（subduction initiation）
+# 参考答案：合并 base + compositional fields 为单文件，模拟时间削减至 ~30s 内可跑完
+
+set Dimension                              = 2
+set Start time                             = 0
+set End time                               = 1.4e5
+set Use years instead of seconds           = true
+set CFL number                             = 1.0
+set Maximum time step                      = 1e5
+set Pressure normalization                 = surface
+set Output directory                       = output-subduction_initiation
+
+subsection Geometry model
+  set Model name = box
+
+  subsection Box
+    set X extent  = 400e3
+    set Y extent  = 180e3
+    set X repetitions = 2
+  end
+end
+
+subsection Boundary velocity model
+  set Tangential velocity boundary indicators = left, right, bottom, top
+end
+
+subsection Gravity model
+  set Model name = vertical
+
+  subsection Vertical
+    set Magnitude = 9.81
+  end
+end
+
+subsection Boundary temperature model
+  set Fixed temperature boundary indicators = bottom, top
+  set List of model names = box
+end
+
+subsection Initial temperature model
+  set Model name = function
+
+  subsection Function
+    set Function expression = 0
+  end
+end
+
+subsection Mesh refinement
+  set Initial global refinement     = 5
+  set Time steps between mesh refinement = 0
+end
+
+subsection Material model
+  set Model name = multicomponent
+
+  subsection Multicomponent
+    set Densities = 3200, 3200, 3300, 3300, 1030
+    set Viscosities = 1e21, 1e21, 1e22, 1e22, 1e18
+    set Viscosity averaging scheme = harmonic
+    set Thermal expansivities = 0
+  end
+end
+
+subsection Compositional fields
+  set Number of fields = 4
+end
+
+subsection Initial composition model
+  set Model name = function
+
+  subsection Function
+    set Variable names      = x,y
+    set Function constants  = L0=300e3, H=180e3
+    set Function expression = if((x>=L0 && y<H-18e3),1,0) ;\
+                              if((x<=L0 && y>H-60e3 && y<=H-10e3),1,0) ;\
+                              if((x>=L0 && y>=H-18e3 && y<=H-8e3),1,0) ;\
+                              if((x<=L0 && y>H-10e3) || (x>=L0 && y>H-8e3),1,0)
+  end
+end
+
+subsection Postprocess
+  set List of postprocessors = visualization, velocity statistics, composition statistics, pressure statistics, material statistics, global statistics
+
+  subsection Visualization
+    set List of output variables = material properties, strain rate
+    set Time between graphical output = 1.4e5
+    set Interpolate output = false
+
+    subsection Material properties
+      set List of material properties = density, viscosity
+    end
+  end
+end
